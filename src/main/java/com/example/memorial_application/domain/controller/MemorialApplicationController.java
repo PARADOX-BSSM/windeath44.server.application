@@ -1,8 +1,8 @@
-package com.example.memorial_application.domain.presentation;
+package com.example.memorial_application.domain.controller;
 
 import com.example.memorial_application.global.mapper.ResponseDtoMapper;
-import com.example.memorial_application.domain.presentation.dto.request.MemorialApplicationRequest;
-import com.example.memorial_application.domain.presentation.dto.response.MemorialApplicationResponse;
+import com.example.memorial_application.domain.dto.request.MemorialApplicationRequest;
+import com.example.memorial_application.domain.dto.response.MemorialApplicationResponse;
 import com.example.memorial_application.global.mapper.dto.CursorPage;
 import com.example.memorial_application.global.mapper.dto.ResponseDto;
 import com.example.memorial_application.domain.service.MemorialApplicationApproveService;
@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.example.memorial_application.domain.presentation.dto.response.MemorialApplicationListResponse;
+import com.example.memorial_application.domain.dto.response.MemorialApplicationListResponse;
 
 import java.util.List;
 

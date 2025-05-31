@@ -1,10 +1,10 @@
-package com.example.memorial_application.domain.domain.mapper;
+package com.example.memorial_application.domain.mapper;
 
 
-import com.example.memorial_application.domain.domain.MemorialApplication;
-import com.example.memorial_application.domain.domain.MemorialApplicationState;
-import com.example.memorial_application.domain.presentation.dto.response.MemorialApplicationListResponse;
-import com.example.memorial_application.domain.presentation.dto.response.MemorialApplicationResponse;
+import com.example.memorial_application.domain.entity.MemorialApplication;
+import com.example.memorial_application.domain.entity.MemorialApplicationState;
+import com.example.memorial_application.domain.dto.response.MemorialApplicationListResponse;
+import com.example.memorial_application.domain.dto.response.MemorialApplicationResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Component;

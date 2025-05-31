@@ -1,8 +1,7 @@
-package com.example.memorial_application.domain.domain;
+package com.example.memorial_application.domain.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 

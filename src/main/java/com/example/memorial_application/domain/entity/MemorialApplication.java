@@ -1,4 +1,4 @@
-package com.example.memorial_application.domain.domain;
+package com.example.memorial_application.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

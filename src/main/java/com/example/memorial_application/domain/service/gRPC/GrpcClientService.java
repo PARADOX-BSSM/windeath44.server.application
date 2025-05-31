@@ -1,10 +1,8 @@
 package com.example.memorial_application.domain.service.gRPC;
 
 import com.example.grpc.*;
-import com.example.memorial_application.domain.domain.MemorialApplication;
-import com.example.memorial_application.domain.service.exception.AlreadyMemorializedCharacterException;
+import com.example.memorial_application.domain.exception.AlreadyMemorializedCharacterException;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.stereotype.Service;
 
