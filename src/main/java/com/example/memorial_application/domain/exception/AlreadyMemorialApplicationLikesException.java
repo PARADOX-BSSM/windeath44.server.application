@@ -1,4 +1,4 @@
-package com.example.memorial_application.domain.service.exception;
+package com.example.memorial_application.domain.exception;
 
 import com.example.memorial_application.global.error.exception.ErrorCode;
 import com.example.memorial_application.global.error.exception.GlobalException;
