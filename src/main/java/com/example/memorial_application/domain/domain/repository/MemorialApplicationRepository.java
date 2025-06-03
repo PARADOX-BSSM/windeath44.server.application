@@ -1,7 +1,10 @@
 package com.example.memorial_application.domain.domain.repository;
 
 import com.example.memorial_application.domain.domain.MemorialApplication;
+import com.example.memorial_application.domain.presentation.dto.response.MemorialApplicationResponse;
 import jakarta.persistence.LockModeType;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Modifying;
@@ -10,6 +13,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface MemorialApplicationRepository extends JpaRepository<MemorialApplication, Long> {
@@ -21,5 +25,12 @@ public interface MemorialApplicationRepository extends JpaRepository<MemorialApp
   @Query(value = "select m from MemorialApplication m order by m.likes desc")
   List<MemorialApplication> findAllSortByLikes();
 
+  @Query(value = "select m from MemorialApplication m where m.memorialApplicationId > :cursorId order by m.memorialApplicationId asc")
+  Slice<MemorialApplication> findPageableByCursor(@Param("cursorId") Long cursorId, Pageable pageable);
 
+  @Query(value = "select m from MemorialApplication m order by m.memorialApplicationId asc")
+  Slice<MemorialApplication> findPageable(Pageable pageable);
+
+  Optional<MemorialApplication> findByCharacterId(Long characterId);
 }
+

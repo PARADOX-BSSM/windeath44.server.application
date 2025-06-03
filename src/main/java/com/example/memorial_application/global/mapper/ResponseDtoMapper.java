@@ -1,6 +1,6 @@
-package com.example.memorial_application.domain.presentation.dto;
+package com.example.memorial_application.global.mapper;
 
-import com.example.memorial_application.domain.presentation.dto.response.ResponseDto;
+import com.example.memorial_application.global.mapper.dto.ResponseDto;
 import org.springframework.stereotype.Component;
 
 @Component
