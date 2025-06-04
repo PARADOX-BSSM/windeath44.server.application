@@ -1,6 +1,6 @@
 package com.example.memorial_application.domain.dto.response;
 
-import com.example.memorial_application.domain.entity.MemorialApplicationState;
+import com.example.memorial_application.domain.model.MemorialApplicationState;
 
 import java.time.LocalDateTime;
 

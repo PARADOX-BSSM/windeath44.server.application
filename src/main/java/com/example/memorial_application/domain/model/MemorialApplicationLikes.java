@@ -1,4 +1,4 @@
-package com.example.memorial_application.domain.entity;
+package com.example.memorial_application.domain.model;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;

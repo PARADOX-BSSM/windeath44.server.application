@@ -1,6 +1,6 @@
 package com.example.memorial_application.domain.repository;
 
-import com.example.memorial_application.domain.entity.MemorialApplication;
+import com.example.memorial_application.domain.model.MemorialApplication;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;

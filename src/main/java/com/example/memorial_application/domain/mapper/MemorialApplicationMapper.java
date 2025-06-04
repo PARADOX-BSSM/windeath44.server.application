@@ -1,8 +1,8 @@
 package com.example.memorial_application.domain.mapper;
 
 
-import com.example.memorial_application.domain.entity.MemorialApplication;
-import com.example.memorial_application.domain.entity.MemorialApplicationState;
+import com.example.memorial_application.domain.model.MemorialApplication;
+import com.example.memorial_application.domain.model.MemorialApplicationState;
 import com.example.memorial_application.domain.dto.response.MemorialApplicationListResponse;
 import com.example.memorial_application.domain.dto.response.MemorialApplicationResponse;
 import lombok.RequiredArgsConstructor;

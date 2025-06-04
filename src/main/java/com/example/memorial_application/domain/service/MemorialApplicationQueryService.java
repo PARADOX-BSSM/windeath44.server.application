@@ -1,7 +1,7 @@
 package com.example.memorial_application.domain.service;
 
-import com.example.memorial_application.domain.entity.MemorialApplication;
-import com.example.memorial_application.domain.entity.MemorialApplicationLikesId;
+import com.example.memorial_application.domain.model.MemorialApplication;
+import com.example.memorial_application.domain.model.MemorialApplicationLikesId;
 import com.example.memorial_application.domain.mapper.MemorialApplicationLikesMapper;
 import com.example.memorial_application.domain.mapper.MemorialApplicationMapper;
 import com.example.memorial_application.domain.repository.MemorialApplicationLikesRepository;

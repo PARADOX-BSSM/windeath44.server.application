@@ -1,6 +1,6 @@
 package com.example.memorial_application.domain.service;
 
-import com.example.memorial_application.domain.entity.MemorialApplication;
+import com.example.memorial_application.domain.model.MemorialApplication;
 import com.example.memorial_application.domain.repository.MemorialApplicationRepository;
 import com.example.memorial_application.domain.exception.NotFoundMemorialApplicationException;
 import lombok.RequiredArgsConstructor;

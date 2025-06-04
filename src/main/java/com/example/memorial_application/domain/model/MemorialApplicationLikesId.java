@@ -1,4 +1,4 @@
-package com.example.memorial_application.domain.entity;
+package com.example.memorial_application.domain.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
