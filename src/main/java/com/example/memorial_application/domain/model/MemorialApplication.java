@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Getter
+@EntityListeners(AuditingEntityListener.class)
 public class MemorialApplication {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,12 +29,9 @@ public class MemorialApplication {
   private LocalDateTime createdAt;
   @Enumerated(EnumType.STRING)
   private MemorialApplicationState state;
-  @Version
-  private Integer version;
 
   @PrePersist
   public void init() {
-    this.createdAt = LocalDateTime.now();
     this.likes = 0L;
   }
   public void reject() {

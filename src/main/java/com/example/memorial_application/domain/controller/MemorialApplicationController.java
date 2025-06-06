@@ -63,8 +63,8 @@ public class MemorialApplicationController {
   }
 
   @PatchMapping("/approve/{memorial-application-id}/admin")
-  public ResponseEntity<ResponseDto<Void>> approve(@PathVariable("memorial-application-id") Long memorialApplicationId) {
-    memorialApplicationApproveService.approve(memorialApplicationId);
+  public ResponseEntity<ResponseDto<Void>> approve(@PathVariable("memorial-application-id") Long memorialApplicationId, @RequestHeader("user-id") String userId) {
+    memorialApplicationApproveService.approve(memorialApplicationId, userId);
     ResponseDto<Void> responseDto = responseDtoMapper.toResponseDto("approve memorial application", null);
     return ResponseEntity
             .status(HttpStatus.ACCEPTED)
