@@ -1,4 +1,4 @@
-package com.example.memorial_application.domain.presentation;
+package com.example.memorial_application.domain.controller;
 
 import com.example.memorial_application.global.mapper.ResponseDtoMapper;
 import com.example.memorial_application.global.mapper.dto.ResponseDto;

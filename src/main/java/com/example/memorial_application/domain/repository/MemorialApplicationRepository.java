@@ -1,12 +1,9 @@
-package com.example.memorial_application.domain.domain.repository;
+package com.example.memorial_application.domain.repository;
 
-import com.example.memorial_application.domain.domain.MemorialApplication;
-import com.example.memorial_application.domain.presentation.dto.response.MemorialApplicationResponse;
-import jakarta.persistence.LockModeType;
+import com.example.memorial_application.domain.model.MemorialApplication;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

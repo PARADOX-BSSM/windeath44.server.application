@@ -1,4 +1,4 @@
-package com.example.memorial_application.domain.presentation.dto.request;
+package com.example.memorial_application.domain.dto.request;
 
 public record MemorialApplicationRequest(
         Long characterId,

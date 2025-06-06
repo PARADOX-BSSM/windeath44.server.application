@@ -1,8 +1,8 @@
 package com.example.memorial_application.domain.service;
 
-import com.example.memorial_application.domain.domain.MemorialApplication;
-import com.example.memorial_application.domain.domain.repository.MemorialApplicationRepository;
-import com.example.memorial_application.domain.service.exception.NotFoundMemorialApplicationException;
+import com.example.memorial_application.domain.model.MemorialApplication;
+import com.example.memorial_application.domain.repository.MemorialApplicationRepository;
+import com.example.memorial_application.domain.exception.NotFoundMemorialApplicationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

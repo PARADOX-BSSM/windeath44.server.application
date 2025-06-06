@@ -1,14 +1,14 @@
 package com.example.memorial_application.domain.service;
 
-import com.example.memorial_application.domain.domain.MemorialApplication;
-import com.example.memorial_application.domain.domain.MemorialApplicationLikesId;
-import com.example.memorial_application.domain.domain.mapper.MemorialApplicationLikesMapper;
-import com.example.memorial_application.domain.domain.mapper.MemorialApplicationMapper;
-import com.example.memorial_application.domain.domain.repository.MemorialApplicationLikesRepository;
-import com.example.memorial_application.domain.domain.repository.MemorialApplicationRepository;
-import com.example.memorial_application.domain.presentation.dto.response.MemorialApplicationListResponse;
-import com.example.memorial_application.domain.presentation.dto.response.MemorialApplicationResponse;
-import com.example.memorial_application.domain.service.exception.NotFoundMemorialApplicationException;
+import com.example.memorial_application.domain.model.MemorialApplication;
+import com.example.memorial_application.domain.model.MemorialApplicationLikesId;
+import com.example.memorial_application.domain.mapper.MemorialApplicationLikesMapper;
+import com.example.memorial_application.domain.mapper.MemorialApplicationMapper;
+import com.example.memorial_application.domain.repository.MemorialApplicationLikesRepository;
+import com.example.memorial_application.domain.repository.MemorialApplicationRepository;
+import com.example.memorial_application.domain.dto.response.MemorialApplicationListResponse;
+import com.example.memorial_application.domain.dto.response.MemorialApplicationResponse;
+import com.example.memorial_application.domain.exception.NotFoundMemorialApplicationException;
 import com.example.memorial_application.global.mapper.dto.CursorPage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;

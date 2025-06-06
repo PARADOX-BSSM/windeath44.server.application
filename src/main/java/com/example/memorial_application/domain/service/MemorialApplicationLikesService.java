@@ -1,12 +1,12 @@
 package com.example.memorial_application.domain.service;
 
-import com.example.memorial_application.domain.domain.MemorialApplication;
-import com.example.memorial_application.domain.domain.MemorialApplicationLikes;
-import com.example.memorial_application.domain.domain.MemorialApplicationLikesId;
-import com.example.memorial_application.domain.domain.mapper.MemorialApplicationLikesMapper;
-import com.example.memorial_application.domain.domain.repository.MemorialApplicationLikesRepository;
-import com.example.memorial_application.domain.service.exception.AlreadyMemorialApplicationLikesException;
-import com.example.memorial_application.domain.service.exception.NotFoundMemorialApplicationLikesException;
+import com.example.memorial_application.domain.model.MemorialApplication;
+import com.example.memorial_application.domain.model.MemorialApplicationLikes;
+import com.example.memorial_application.domain.model.MemorialApplicationLikesId;
+import com.example.memorial_application.domain.mapper.MemorialApplicationLikesMapper;
+import com.example.memorial_application.domain.repository.MemorialApplicationLikesRepository;
+import com.example.memorial_application.domain.exception.AlreadyMemorialApplicationLikesException;
+import com.example.memorial_application.domain.exception.NotFoundMemorialApplicationLikesException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

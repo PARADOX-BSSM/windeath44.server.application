@@ -1,7 +1,7 @@
-package com.example.memorial_application.domain.domain.mapper;
+package com.example.memorial_application.domain.mapper;
 
-import com.example.memorial_application.domain.domain.MemorialApplicationLikes;
-import com.example.memorial_application.domain.domain.MemorialApplicationLikesId;
+import com.example.memorial_application.domain.model.MemorialApplicationLikes;
+import com.example.memorial_application.domain.model.MemorialApplicationLikesId;
 import org.springframework.stereotype.Component;
 
 @Component

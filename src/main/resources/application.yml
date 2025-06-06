@@ -28,13 +28,8 @@ grpc:
 
 kafka:
   bootstrap-servers: ${KAFKA_SERVER}
-  consumer:
-    group-id: memorial
-    auto-offset-reset: earliest
-    key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-    value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+  schema-registry-url: http://localhost:8081
   producer:
     key-serializer: org.apache.kafka.common.serialization.StringSerializer
-    value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
 
-    

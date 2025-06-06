@@ -14,14 +14,4 @@ public enum ErrorCode {
 
   private int status;
   private String message;
-
-  public static boolean contains(int value) {
-    for(ErrorCode errorCode : ErrorCode.values()) {
-      int status = errorCode.getStatus();
-      if (value == status) {
-        return true;
-      }
-    }
-    return false;
-  }
 }
