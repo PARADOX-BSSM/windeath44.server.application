@@ -1,8 +1,9 @@
 {
   "type": "record",
-  "name": "MemorialAvroSchema",
+  "name": "MemorialApplicationAvroSchema",
   "namespace": "com.example.avro",
   "fields": [
+     {"name": "memorialApplicationId", "type": "string"},
     {"name": "applicantId", "type": "string"},
     {"name": "approverId", "type": "string"},
     {"name": "content", "type": "string"},
