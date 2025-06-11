@@ -19,7 +19,5 @@ WORKDIR /app
 # 빌드한 JAR 파일 복사
 COPY --from=build /app/build/libs/*.jar app.jar
 
-CMD ["/bin/bash", "-c", "set -a; source /app/.env; set +a; java -jar /app/app.jar"]
-
 # 애플리케이션 실행
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]
