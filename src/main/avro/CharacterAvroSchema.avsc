@@ -1,0 +1,13 @@
+{
+  "type": "record",
+  "name": "CharacterAvroSchema",
+  "namespace": "com.example.avro",
+  "fields": [
+    {"name": "characterId", "type": "long"},
+    {"name": "name", "type": "string"},
+    {"name": "content", "type": "string"},
+    {"name": "death_reason", "type": "string"},
+    {"name": "state", "type": "string"},
+    {"name": "applicantId", "type": "string"}
+  ]
+}

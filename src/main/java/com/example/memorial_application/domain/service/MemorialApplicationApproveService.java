@@ -1,11 +1,14 @@
 package com.example.memorial_application.domain.service;
 
+import com.example.avro.CharacterAvroSchema;
+import com.example.avro.MemorialApplicationAvroSchema;
+import com.example.avro.MemorialAvroSchema;
+import com.example.memorial_application.domain.exception.NotFoundMemorialApplicationException;
 import com.example.memorial_application.domain.model.MemorialApplication;
 import com.example.memorial_application.domain.mapper.MemorialApplicationMapper;
 import com.example.memorial_application.domain.repository.MemorialApplicationRepository;
 import com.example.memorial_application.domain.service.gRPC.GrpcClientService;
 import com.example.memorial_application.global.producer.KafkaProducer;
-import com.example.memorial_application.global.utils.EventUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,14 +30,12 @@ public class MemorialApplicationApproveService {
     memorialApplicationRepository.save(memorialApplication);
   }
 
-  @Transactional
+
   public void approve(Long memorialApplicationId, String userId) {
     MemorialApplication memorialApplication = finder.findMemorialApplicationById(memorialApplicationId);
-    memorialApplication.approve();
     // kafka로 오케스트레이션 서버에 memorial application approve 요청 with memorialApplicationId
-    kafkaProducer.send("memorial-creation", EventUtil.memorialAvroSchema(memorialApplication, userId));
-    // pending 상태의 같은 캐릭터에 대한 요청들을 rejected 상태로 변환
-    restMemorialApplicationRejected(memorialApplication);
+    MemorialApplicationAvroSchema memorialApplicationAvroSchema = memorialApplicationMapper.toMemorialApplicationAvroSchema(memorialApplication, userId);
+    kafkaProducer.send("memorial-application-", memorialApplicationAvroSchema);
   }
 
   private void restMemorialApplicationRejected(MemorialApplication memorialApplication) {
@@ -50,4 +51,34 @@ public class MemorialApplicationApproveService {
     memorialApplication.reject();
   }
 
+  @Transactional
+  public void approve(CharacterAvroSchema message) {
+    String applicantId = message.getApplicantId();
+    Long characterId = message.getCharacterId();
+
+    MemorialApplication memorialApplication = findApplicationByUserIdAndCharacterId(applicantId, characterId);
+    memorialApplication.approve();
+    // pending 상태의 같은 캐릭터에 대한 요청들을 rejected 상태로 변환
+    restMemorialApplicationRejected(memorialApplication);
+
+    MemorialApplicationAvroSchema memorialApplicationAvroShema = memorialApplicationMapper.toMemorialApplicationAvroSchema(memorialApplication, applicantId);
+    kafkaProducer.send("memorial-creation-orchestration-complete", memorialApplicationAvroShema);
+  }
+
+  @Transactional
+  public void cancel(MemorialAvroSchema message) {
+    String applicantId = message.getWriterId();
+    Long characterId = message.getCharacterId();
+
+    MemorialApplication memorialApplication = findApplicationByUserIdAndCharacterId(applicantId, characterId);
+    memorialApplication.cancel();
+
+    MemorialApplicationAvroSchema memorialApplicationAvroShema = memorialApplicationMapper.toMemorialApplicationAvroSchema(memorialApplication, applicantId);
+    kafkaProducer.send("memorial-application-cancel-response", memorialApplicationAvroShema);
+  }
+
+  private MemorialApplication findApplicationByUserIdAndCharacterId(String applicantId, Long characterId) {
+    return memorialApplicationRepository.findByUserIdAndCharacterId(applicantId, characterId)
+            .orElseThrow(NotFoundMemorialApplicationException::getInstance);
+  }
 }

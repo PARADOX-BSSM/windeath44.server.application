@@ -42,6 +42,10 @@ public class MemorialApplication {
     this.state = MemorialApplicationState.APPROVED;
   }
 
+  public void cancel() {
+    this.state  = MemorialApplicationState.PENDING;
+  }
+
 
   public void countLikes(Long likes) {
     this.likes = likes;
@@ -54,5 +58,6 @@ public class MemorialApplication {
   public void decrementLikes() {
     this.likes--;
   }
+
 }
 

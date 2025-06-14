@@ -1,0 +1,12 @@
+{
+  "type": "record",
+  "name": "MemorialApplicationAvroSchema",
+  "namespace": "com.example.avro",
+  "fields": [
+     {"name": "memorialApplicationId", "type": "long"},
+    {"name": "applicantId", "type": "string"},
+    {"name": "approverId", "type": "string"},
+    {"name": "content", "type": "string"},
+    {"name": "characterId", "type": "long"}
+  ]
+}
