@@ -31,5 +31,7 @@ public interface MemorialApplicationRepository extends JpaRepository<MemorialApp
   Optional<MemorialApplication> findByCharacterId(Long characterId);
 
   Optional<MemorialApplication> findByUserIdAndCharacterId(String applicantId, Long characterId);
+
+  Boolean existsByUserIdAndCharacterId(String userId, Long characterId);
 }
 

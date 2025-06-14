@@ -3,6 +3,7 @@ package com.example.memorial_application.domain.service;
 import com.example.avro.CharacterAvroSchema;
 import com.example.avro.MemorialApplicationAvroSchema;
 import com.example.avro.MemorialAvroSchema;
+import com.example.memorial_application.domain.exception.AlreadyMemorialApplicationException;
 import com.example.memorial_application.domain.exception.NotFoundMemorialApplicationException;
 import com.example.memorial_application.domain.model.MemorialApplication;
 import com.example.memorial_application.domain.mapper.MemorialApplicationMapper;
@@ -25,6 +26,11 @@ public class MemorialApplicationApproveService {
 
   public void apply(String userId, Long characterId, String content) {
     MemorialApplication memorialApplication = memorialApplicationMapper.toMemorialApplication(userId, characterId, content);
+    // 만약 사용자가 해당 캐릭터에 대한 추모관을 이미 신청한 경우, 실패
+    // 중복 신청은 안됨
+    if (memorialApplicationRepository.existsByUserIdAndCharacterId(userId, characterId))
+      throw AlreadyMemorialApplicationException.getInstance();
+
     // 만약 해당 캐릭터가 이미 추모중이라면 apply 실패
     grpcClient.validateNotAlreadyMemorialized(characterId);
     memorialApplicationRepository.save(memorialApplication);
