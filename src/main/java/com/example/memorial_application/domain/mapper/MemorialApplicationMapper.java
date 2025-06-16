@@ -1,6 +1,8 @@
 package com.example.memorial_application.domain.mapper;
 
 
+import com.example.avro.MemorialApplicationAvroSchema;
+import com.example.avro.MemorialAvroSchema;
 import com.example.memorial_application.domain.model.MemorialApplication;
 import com.example.memorial_application.domain.model.MemorialApplicationState;
 import com.example.memorial_application.domain.dto.response.MemorialApplicationListResponse;
@@ -54,5 +56,20 @@ public class MemorialApplicationMapper {
             .stream()
             .map(this::toMemorialApplicationListResponse)
             .toList();
+  }
+
+  public MemorialApplicationAvroSchema toMemorialApplicationAvroSchema(MemorialApplication memorialApplication, String userId) {
+    Long memorialApplicationId = memorialApplication.getMemorialApplicationId();
+    String applicantId = memorialApplication.getUserId();
+    String content = memorialApplication.getContent();
+    Long characterId = memorialApplication.getCharacterId();
+
+    return MemorialApplicationAvroSchema.newBuilder()
+            .setMemorialApplicationId(memorialApplicationId)
+            .setApplicantId(applicantId)
+            .setApproverId(userId)
+            .setContent(content)
+            .setCharacterId(characterId)
+            .build();
   }
 }

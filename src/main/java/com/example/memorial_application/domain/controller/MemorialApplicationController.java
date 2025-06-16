@@ -34,26 +34,20 @@ public class MemorialApplicationController {
             .body(responseDto);
   }
 
-  @GetMapping("/details")
+  @GetMapping
   public ResponseEntity<ResponseDto<CursorPage<MemorialApplicationListResponse>>> findByCursor(@RequestParam(value = "cursor-id", required = false) Long cursorId, @RequestParam("size") int size) {
     CursorPage<MemorialApplicationListResponse> memorialApplicationResponse = memorialApplicationQueryService.findByCursor(cursorId, size);
     ResponseDto<CursorPage<MemorialApplicationListResponse>> responseDto = responseDtoMapper.toResponseDto("find memorials application with cursor", memorialApplicationResponse);
     return ResponseEntity.ok(responseDto);
   }
 
-  @GetMapping("/details/{character-id}")
-  public ResponseEntity<ResponseDto<MemorialApplicationResponse>> findByCharacterId(@RequestHeader(value = "user-id", required = false) String userId, @PathVariable("character-id") Long characterId) {
+  @GetMapping("/search/character-id")
+  public ResponseEntity<ResponseDto<MemorialApplicationResponse>> findByCharacterId(@RequestHeader(value = "user-id", required = false) String userId, @RequestParam("character-id") Long characterId) {
     MemorialApplicationResponse memorialApplicationResponse = memorialApplicationQueryService.findByCharacterId(characterId, userId);
     ResponseDto<MemorialApplicationResponse> responseDto = responseDtoMapper.toResponseDto("find memorial application with characterId", memorialApplicationResponse);
     return ResponseEntity.ok(responseDto);
   }
 
-  @GetMapping
-  public ResponseEntity<ResponseDto<List<MemorialApplicationListResponse>>> findAll() {
-    List<MemorialApplicationListResponse> memorialApplicationResponse = memorialApplicationQueryService.findAll();
-    ResponseDto<List<MemorialApplicationListResponse>> responseDto = responseDtoMapper.toResponseDto("find memorials applications", memorialApplicationResponse);
-    return ResponseEntity.ok(responseDto);
-  }
 
   @GetMapping("/{memorial-application-id}")
   public ResponseEntity<ResponseDto<MemorialApplicationResponse>> findById(@RequestHeader(value = "user-id", required = false) String userId, @PathVariable("memorial-application-id") Long memorialApplicationId) {

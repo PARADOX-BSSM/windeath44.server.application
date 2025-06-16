@@ -3,8 +3,8 @@
   "name": "MemorialAvroSchema",
   "namespace": "com.example.avro",
   "fields": [
-    {"name": "applicantId", "type": "string"},
-    {"name": "approverId", "type": "string"},
+    {"name": "memorialId", "type": "long"},
+    {"name": "writerId", "type": "string"},
     {"name": "content", "type": "string"},
     {"name": "characterId", "type": "long"}
   ]
