@@ -59,5 +59,8 @@ public class MemorialApplication {
     this.likes--;
   }
 
+  public void update(String content) {
+    this.content = content;
+  }
 }
 

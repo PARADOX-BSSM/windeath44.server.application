@@ -3,6 +3,7 @@ package com.example.memorial_application.domain.service;
 import com.example.avro.CharacterAvroSchema;
 import com.example.avro.MemorialApplicationAvroSchema;
 import com.example.avro.MemorialAvroSchema;
+import com.example.memorial_application.domain.dto.request.MemorialApplicationUpadateRequest;
 import com.example.memorial_application.domain.exception.AlreadyMemorialApplicationException;
 import com.example.memorial_application.domain.exception.NotFoundMemorialApplicationException;
 import com.example.memorial_application.domain.model.MemorialApplication;
@@ -16,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class MemorialApplicationApproveService {
+public class MemorialApplicationCommandService {
   private final MemorialApplicationRepository memorialApplicationRepository;
   private final MemorialApplicationMapper memorialApplicationMapper;
   private final MemorialApplicationFinder finder;
@@ -86,5 +87,17 @@ public class MemorialApplicationApproveService {
   private MemorialApplication findApplicationByUserIdAndCharacterId(String applicantId, Long characterId) {
     return memorialApplicationRepository.findByUserIdAndCharacterId(applicantId, characterId)
             .orElseThrow(NotFoundMemorialApplicationException::getInstance);
+  }
+
+  @Transactional
+  public void delete(Long memorialApplicationId) {
+    MemorialApplication memorialApplication = finder.findMemorialApplicationById(memorialApplicationId);
+    memorialApplicationRepository.delete(memorialApplication);
+  }
+
+  @Transactional
+  public void update(Long memorialApplicationId, MemorialApplicationUpadateRequest memorialApplicationUpdateRequest) {
+    MemorialApplication memorialApplication = finder.findMemorialApplicationById(memorialApplicationId);
+    memorialApplication.update(memorialApplicationUpdateRequest.content());
   }
 }

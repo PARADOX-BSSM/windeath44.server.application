@@ -33,5 +33,11 @@ public interface MemorialApplicationRepository extends JpaRepository<MemorialApp
   Optional<MemorialApplication> findByUserIdAndCharacterId(String applicantId, Long characterId);
 
   Boolean existsByUserIdAndCharacterId(String userId, Long characterId);
+
+  @Query("select m from MemorialApplication m where m.userId = :userId order by m.memorialApplicationId desc")
+  Slice<MemorialApplication> findMyApplicationPageable(@Param("userId") String userId, Pageable pageable);
+
+  @Query("select m from MemorialApplication m where m.userId = :userId and m.memorialApplicationId < :cursorId order by m.memorialApplicationId desc")
+  Slice<MemorialApplication> findMyApplicationPageableByCursorId(@Param("userId") String userId, @Param("cursorId") Long cursorId, Pageable pageable);
 }
 

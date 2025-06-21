@@ -22,8 +22,6 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -45,7 +43,7 @@ class MemorialApplicationApproveServiceTest {
     private KafkaProducer kafkaProducer;
 
     @InjectMocks
-    private MemorialApplicationApproveService memorialApplicationApproveService;
+    private MemorialApplicationCommandService memorialApplicationApproveService;
 
     private String userId;
     private Long characterId;
