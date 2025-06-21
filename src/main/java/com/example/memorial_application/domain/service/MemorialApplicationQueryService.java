@@ -73,4 +73,17 @@ public class MemorialApplicationQueryService  {
     return memorialApplicationResponse;
   }
 
+  public CursorPage<MemorialApplicationListResponse> findMyApplicationByCursor(String userId, Long cursorId, int size) {
+    Pageable pageable = PageRequest.of(0, size + 1);
+
+    Slice<MemorialApplication> memorialApplicationSlice = cursorId == null
+            ? memorialApplicationRepository.findMyApplicationPageable(userId, pageable)
+            : memorialApplicationRepository.findMyApplicationPageableByCursorId(userId, cursorId, pageable);
+
+    List<MemorialApplicationListResponse> memorialApplicationsList = memorialApplicationMapper.toMemorialApplicationPageListResponse(memorialApplicationSlice);
+
+    return new CursorPage<>(memorialApplicationsList, memorialApplicationSlice.hasNext());
+
+
+  }
 }

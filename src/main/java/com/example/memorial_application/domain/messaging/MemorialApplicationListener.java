@@ -2,7 +2,7 @@ package com.example.memorial_application.domain.messaging;
 
 import com.example.avro.CharacterAvroSchema;
 import com.example.avro.MemorialAvroSchema;
-import com.example.memorial_application.domain.service.MemorialApplicationApproveService;
+import com.example.memorial_application.domain.service.MemorialApplicationCommandService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class MemorialApplicationListener {
-  private final MemorialApplicationApproveService memorialApplicationApproveService;
+  private final MemorialApplicationCommandService memorialApplicationApproveService;
 
   @KafkaListener(topics = "memorial-application-approved-response", groupId = "memorial")
   public void listenApproved(CharacterAvroSchema message) {
