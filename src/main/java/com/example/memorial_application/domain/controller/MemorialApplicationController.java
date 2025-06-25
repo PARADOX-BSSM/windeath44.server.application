@@ -52,7 +52,6 @@ public class MemorialApplicationController {
     CursorPage<MemorialApplicationListResponse> memorialApplicationResponse = memorialApplicationQueryService.findMyApplicationByCursor(userId, cursorId, size);
     ResponseDto<CursorPage<MemorialApplicationListResponse>> responseDto = responseDtoMapper.toResponseDto("find my memorial application", memorialApplicationResponse);
     return ResponseEntity.ok(responseDto);
-
   }
 
 
