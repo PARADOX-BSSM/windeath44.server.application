@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 public class MemorialApplicationFinder {
   private final MemorialApplicationRepository memorialApplicationRepository;
 
-
   public MemorialApplication findMemorialApplicationById(Long memorialApplicationId) {
     return memorialApplicationRepository.findById(memorialApplicationId)
             .orElseThrow(NotFoundMemorialApplicationException::getInstance);
