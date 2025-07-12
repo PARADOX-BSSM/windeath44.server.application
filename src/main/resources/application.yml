@@ -37,3 +37,6 @@ kafka:
     key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
     value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
     specific-avro-reader: true
+logging:
+  level:
+    root: trace
