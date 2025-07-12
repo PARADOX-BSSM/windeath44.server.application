@@ -39,4 +39,4 @@ kafka:
     specific-avro-reader: true
 logging:
   level:
-    root: trace
+    com.example.memorial_application: trace
