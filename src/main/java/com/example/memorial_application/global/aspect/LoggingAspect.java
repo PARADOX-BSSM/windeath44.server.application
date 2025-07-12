@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class LoggingAspect {
 
-    @Pointcut("execution(* com.example.memorial_application.domain.service.*.*(..))")
+    @Pointcut("execution(* com.example.memorial_application.domain.service..*.*(..))")
     public void memorialApplicationServiceMethodLogging() {}
 
     @Around("memorialApplicationServiceMethodLogging()")
