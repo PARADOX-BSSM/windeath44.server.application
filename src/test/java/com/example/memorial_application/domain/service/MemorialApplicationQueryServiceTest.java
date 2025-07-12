@@ -9,7 +9,7 @@ import com.example.memorial_application.domain.model.MemorialApplication;
 import com.example.memorial_application.domain.model.MemorialApplicationLikesId;
 import com.example.memorial_application.domain.repository.MemorialApplicationLikesRepository;
 import com.example.memorial_application.domain.repository.MemorialApplicationRepository;
-import com.example.memorial_application.global.mapper.dto.CursorPage;
+import com.example.memorial_application.global.dto.CursorPage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
