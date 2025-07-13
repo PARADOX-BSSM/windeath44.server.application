@@ -1,7 +1,7 @@
 package com.example.memorial_application.domain.controller;
 
 import com.example.memorial_application.global.mapper.ResponseDtoMapper;
-import com.example.memorial_application.global.mapper.dto.ResponseDto;
+import com.example.memorial_application.global.dto.ResponseDto;
 import com.example.memorial_application.domain.service.MemorialApplicationLikesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

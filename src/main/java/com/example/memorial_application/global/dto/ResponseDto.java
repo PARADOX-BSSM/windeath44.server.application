@@ -1,4 +1,4 @@
-package com.example.memorial_application.global.mapper.dto;
+package com.example.memorial_application.global.dto;
 
 public record ResponseDto<T> (
         String message,

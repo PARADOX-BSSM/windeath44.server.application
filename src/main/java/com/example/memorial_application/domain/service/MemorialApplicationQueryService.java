@@ -9,7 +9,7 @@ import com.example.memorial_application.domain.repository.MemorialApplicationRep
 import com.example.memorial_application.domain.dto.response.MemorialApplicationListResponse;
 import com.example.memorial_application.domain.dto.response.MemorialApplicationResponse;
 import com.example.memorial_application.domain.exception.NotFoundMemorialApplicationException;
-import com.example.memorial_application.global.mapper.dto.CursorPage;
+import com.example.memorial_application.global.dto.CursorPage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
