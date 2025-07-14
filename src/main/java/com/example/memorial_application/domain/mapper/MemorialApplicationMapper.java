@@ -14,11 +14,11 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.function.Function;
 
 @Component
 @RequiredArgsConstructor
 public class MemorialApplicationMapper {
-
   public MemorialApplication toMemorialApplication(String userId, Long characterId, String content) {
     return MemorialApplication.builder()
             .userId(userId)
@@ -72,5 +72,24 @@ public class MemorialApplicationMapper {
             .setContent(content)
             .setCharacterId(characterId)
             .build();
+  }
+
+  public List<MemorialApplicationListResponse> toMemorialApplicationResponse(Slice<MemorialApplication> memorialApplicationSlice) {
+    return memorialApplicationSlice.getContent()
+            .stream()
+            .map(this::toMemorialApplicationResponse)
+            .toList();
+  }
+
+  private MemorialApplicationListResponse toMemorialApplicationResponse(MemorialApplication memorialApplication) {
+    String userId = memorialApplication.getUserId();
+    Long characterId = memorialApplication.getCharacterId();
+    String content = memorialApplication.getContent();
+    LocalDate createdAt = memorialApplication.getCreatedAt();
+    MemorialApplicationState state = memorialApplication.getState();
+    Long likes = memorialApplication.getLikes();
+    Long memorialApplicationId = memorialApplication.getMemorialApplicationId();
+
+    return new MemorialApplicationListResponse(userId, characterId, memorialApplicationId, content, createdAt, state, likes);
   }
 }
