@@ -63,12 +63,11 @@ public class MemorialApplicationController {
   }
 
   @GetMapping("/search/character-id")
-  public ResponseEntity<ResponseDto<CursorPage<MemorialApplicationListResponse>>> findByCharacterId(@RequestHeader(value = "user-id", required = false) String userId, @RequestParam("character-id") Long characterId, @RequestParam("cursor-id") Long cursorId, @RequestParam("size") int size) {
+  public ResponseEntity<ResponseDto<CursorPage<MemorialApplicationListResponse>>> findByCharacterId(@RequestHeader(value = "user-id", required = false) String userId, @RequestParam("character-id") Long characterId, @RequestParam(value = "cursor-id", required = false) Long cursorId, @RequestParam("size") int size) {
     CursorPage<MemorialApplicationListResponse> memorialApplicationResponse = memorialApplicationQueryService.findByCharacterId(characterId, userId, cursorId, size);
     ResponseDto<CursorPage<MemorialApplicationListResponse>> responseDto = HttpUtil.success("find memorial application with characterId", memorialApplicationResponse);
     return ResponseEntity.ok(responseDto);
   }
-
 
   @GetMapping("/{memorial-application-id}")
   public ResponseEntity<ResponseDto<MemorialApplicationResponse>> findById(@RequestHeader(value = "user-id", required = false) String userId, @PathVariable("memorial-application-id") Long memorialApplicationId) {
