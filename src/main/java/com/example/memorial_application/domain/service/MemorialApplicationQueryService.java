@@ -27,19 +27,6 @@ public class MemorialApplicationQueryService  {
   private final MemorialApplicationLikesRepository memorialApplicationLikesRepository;
   private final MemorialApplicationLikesMapper memorialApplicationLikesMapper;
 
-  public List<MemorialApplicationListResponse> findAll() {
-    List<MemorialApplicationListResponse> memorialApplicationList = getMemorialApplicationList();
-    return memorialApplicationList;
-  }
-
-  private List<MemorialApplicationListResponse> getMemorialApplicationList() {
-    List<MemorialApplicationListResponse> memorialApplicationResponseList = memorialApplicationRepository.findAllSortByLikes()
-            .stream()
-            .map(memorialApplicationMapper::toMemorialApplicationListResponse)
-            .toList();
-    return memorialApplicationResponseList;
-  }
-
   public MemorialApplicationResponse findById(Long memorialApplicationId, String userId) {
     MemorialApplication memorialApplication = finder.findMemorialApplicationById(memorialApplicationId);
     boolean userDidLikes = didUserLike(userId, memorialApplicationId);
@@ -65,7 +52,7 @@ public class MemorialApplicationQueryService  {
     return new CursorPage<>(memorialApplicationsList, memorialApplicationSlice.hasNext());
   }
 
-  public CursorPage<MemorialApplicationListResponse> findByCharacterId(Long characterId, String userId, Long cursorId, int size) {
+  public CursorPage<MemorialApplicationListResponse> findByCharacterId(Long characterId, Long cursorId, int size) {
     Pageable pageable = PageRequest.of(0, size);
     Slice<MemorialApplication> memorialApplicationSlice = cursorId == null
             ? memorialApplicationRepository.findByCharacterId(characterId, pageable)

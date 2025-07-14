@@ -19,9 +19,6 @@ public interface MemorialApplicationRepository extends JpaRepository<MemorialApp
   @Query(value = "update MemorialApplication m set m.state = 'REJECTED' where m.characterId = :characterId and m.memorialApplicationId != :memorialApplicationId")
   void updateStateToRejectedByCharacterId(@Param("memorialApplicationId") Long memorialApplicationId, @Param("characterId") Long characterId);
 
-  @Query(value = "select m from MemorialApplication m order by m.likes desc")
-  List<MemorialApplication> findAllSortByLikes();
-
   @Query(value = "select m from MemorialApplication m where m.memorialApplicationId > :cursorId order by m.memorialApplicationId asc")
   Slice<MemorialApplication> findPageableByCursor(@Param("cursorId") Long cursorId, Pageable pageable);
 
