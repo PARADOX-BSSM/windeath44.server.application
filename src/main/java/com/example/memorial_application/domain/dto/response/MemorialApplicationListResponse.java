@@ -2,6 +2,7 @@ package com.example.memorial_application.domain.dto.response;
 
 import com.example.memorial_application.domain.model.MemorialApplicationState;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public record MemorialApplicationListResponse (
@@ -12,7 +13,7 @@ public record MemorialApplicationListResponse (
         //신청 정보
         Long memorialApplicationId,
         String content,
-        LocalDateTime createdAt,
+        LocalDate createdAt,
         MemorialApplicationState state,
         Long likes
 ) {

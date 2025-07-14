@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 
 @Entity
 @NoArgsConstructor
@@ -61,6 +63,13 @@ public class MemorialApplication {
 
   public void update(String content) {
     this.content = content;
+  }
+
+  public LocalDate getCreatedAt() {
+    int year = this.createdAt.getYear();
+    Month month = this.createdAt.getMonth();
+    int day = this.createdAt.getDayOfMonth();
+    return LocalDate.of(year, month, day);
   }
 }
 

@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class MemorialApplicationMapper {
     String userId = memorialApplication.getUserId();
     Long characterId = memorialApplication.getCharacterId();
     String content = memorialApplication.getContent();
-    LocalDateTime createdAt = memorialApplication.getCreatedAt();
+    LocalDate createdAt = memorialApplication.getCreatedAt();
     MemorialApplicationState state = memorialApplication.getState();
     Long likes = memorialApplication.getLikes();
 
@@ -44,7 +45,7 @@ public class MemorialApplicationMapper {
     String userId = memorialApplication.getUserId();
     Long characterId = memorialApplication.getCharacterId();
     String content = memorialApplication.getContent();
-    LocalDateTime createdAt = memorialApplication.getCreatedAt();
+    LocalDate createdAt = memorialApplication.getCreatedAt();
     MemorialApplicationState state = memorialApplication.getState();
     Long likes = memorialApplication.getLikes();
 

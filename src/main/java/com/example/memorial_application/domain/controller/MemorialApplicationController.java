@@ -53,9 +53,6 @@ public class MemorialApplicationController {
     return ResponseEntity.ok(responseDto);
   }
 
-
-
-
   @GetMapping
   public ResponseEntity<ResponseDto<CursorPage<MemorialApplicationListResponse>>> findByCursor(@RequestParam(value = "cursor-id", required = false) Long cursorId, @RequestParam("size") int size) {
     CursorPage<MemorialApplicationListResponse> memorialApplicationResponse = memorialApplicationQueryService.findByCursor(cursorId, size);
