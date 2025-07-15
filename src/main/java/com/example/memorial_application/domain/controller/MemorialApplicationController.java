@@ -8,6 +8,7 @@ import com.example.memorial_application.global.dto.ResponseDto;
 import com.example.memorial_application.domain.service.MemorialApplicationCommandService;
 import com.example.memorial_application.domain.service.MemorialApplicationQueryService;
 import com.example.memorial_application.global.util.HttpUtil;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ public class MemorialApplicationController {
   private final MemorialApplicationCommandService memorialApplicationCommandService;
 
   @PostMapping("/apply")
-  public ResponseEntity<ResponseDto<Void>> apply(@RequestHeader("user-id") String userId, @RequestBody MemorialApplicationRequest request) {
+  public ResponseEntity<ResponseDto<Void>> apply(@RequestHeader("user-id") String userId, @RequestBody @Valid MemorialApplicationRequest request) {
     Long characterId = request.characterId();
     String content = request.content();
     memorialApplicationCommandService.apply(userId, characterId, content);
@@ -42,28 +43,28 @@ public class MemorialApplicationController {
   }
 
   @PatchMapping("/{memorial-application-id}")
-  public ResponseEntity<ResponseDto<Void>> update(@PathVariable("memorial-application-id") Long memorialApplicationId, @RequestBody MemorialApplicationUpadateRequest memorialApplicationUpadteRequest) {
+  public ResponseEntity<ResponseDto<Void>> update(@PathVariable("memorial-application-id") Long memorialApplicationId, @RequestBody @Valid MemorialApplicationUpadateRequest memorialApplicationUpadteRequest) {
     memorialApplicationCommandService.update(memorialApplicationId, memorialApplicationUpadteRequest);
     ResponseDto<Void> responseDto = HttpUtil.success("update memorial application");
     return ResponseEntity.ok(responseDto);
   }
 
   @GetMapping("/my")
-  public ResponseEntity<ResponseDto<CursorPage<MemorialApplicationListResponse>>> findByUserId(@RequestHeader("user-id") String userId, @RequestParam(value = "cursor-id", required = false) Long cursorId, @RequestParam("size") int size) {
+  public ResponseEntity<ResponseDto<CursorPage<MemorialApplicationListResponse>>> findByUserId(@RequestHeader("user-id") String userId, @RequestParam(value = "cursorId", required = false) Long cursorId, @RequestParam("size") int size) {
     CursorPage<MemorialApplicationListResponse> memorialApplicationResponse = memorialApplicationQueryService.findMyApplicationByCursor(userId, cursorId, size);
     ResponseDto<CursorPage<MemorialApplicationListResponse>> responseDto = HttpUtil.success("find my memorial application", memorialApplicationResponse);
     return ResponseEntity.ok(responseDto);
   }
 
   @GetMapping
-  public ResponseEntity<ResponseDto<CursorPage<MemorialApplicationListResponse>>> findByCursor(@RequestParam(value = "cursor-id", required = false) Long cursorId, @RequestParam("size") int size) {
+  public ResponseEntity<ResponseDto<CursorPage<MemorialApplicationListResponse>>> findByCursor(@RequestParam(value = "cursorId", required = false) Long cursorId, @RequestParam("size") int size) {
     CursorPage<MemorialApplicationListResponse> memorialApplicationResponse = memorialApplicationQueryService.findByCursor(cursorId, size);
     ResponseDto<CursorPage<MemorialApplicationListResponse>> responseDto = HttpUtil.success("find memorials application with cursor", memorialApplicationResponse);
     return ResponseEntity.ok(responseDto);
   }
 
   @GetMapping("/search/character-id")
-  public ResponseEntity<ResponseDto<CursorPage<MemorialApplicationListResponse>>> findByCharacterId(@RequestParam("character-id") Long characterId, @RequestParam(value = "cursor-id", required = false) Long cursorId, @RequestParam("size") int size) {
+  public ResponseEntity<ResponseDto<CursorPage<MemorialApplicationListResponse>>> findByCharacterId(@RequestParam("characterId") Long characterId, @RequestParam(value = "cursorId", required = false) Long cursorId, @RequestParam("size") int size) {
     CursorPage<MemorialApplicationListResponse> memorialApplicationResponse = memorialApplicationQueryService.findByCharacterId(characterId, cursorId, size);
     ResponseDto<CursorPage<MemorialApplicationListResponse>> responseDto = HttpUtil.success("find memorial application with characterId", memorialApplicationResponse);
     return ResponseEntity.ok(responseDto);
