@@ -63,7 +63,7 @@ public class MemorialApplicationController {
     return ResponseEntity.ok(responseDto);
   }
 
-  @GetMapping("/search/character-id")
+  @GetMapping("/search")
   public ResponseEntity<ResponseDto<CursorPage<MemorialApplicationListResponse>>> findByCharacterId(@RequestParam("characterId") Long characterId, @RequestParam(value = "cursorId", required = false) Long cursorId, @RequestParam("size") int size) {
     CursorPage<MemorialApplicationListResponse> memorialApplicationResponse = memorialApplicationQueryService.findByCharacterId(characterId, cursorId, size);
     ResponseDto<CursorPage<MemorialApplicationListResponse>> responseDto = HttpUtil.success("find memorial application with characterId", memorialApplicationResponse);
@@ -77,7 +77,7 @@ public class MemorialApplicationController {
     return ResponseEntity.ok(responseDto);
   }
 
-  @PatchMapping("/approve/{memorial-application-id}/admin")
+  @PatchMapping("/approve/{memorial-application-id}")
   public ResponseEntity<ResponseDto<Void>> approve(@PathVariable("memorial-application-id") Long memorialApplicationId, @RequestHeader("user-id") String userId) {
     memorialApplicationCommandService.approve(memorialApplicationId, userId);
     ResponseDto<Void> responseDto = HttpUtil.success("approve memorial application");
