@@ -16,7 +16,7 @@ import com.example.memorial_application.domain.dto.response.MemorialApplicationL
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value="/memorials/application")
+@RequestMapping(value="/applications")
 public class MemorialApplicationController {
   private final MemorialApplicationQueryService memorialApplicationQueryService;
   private final MemorialApplicationCommandService memorialApplicationCommandService;
