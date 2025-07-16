@@ -9,7 +9,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
     database-platform: org.hibernate.dialect.MySQL8Dialect
 
 
@@ -27,8 +27,8 @@ grpc:
 
 
 kafka:
-  bootstrap-servers: ${KAFKA_SERVER}
-  schema-registry-url: http://localhost:8081
+  bootstrap-servers: ${KAFKA_URL}
+  schema-registry-url: ${SCHEMA_REGISTRY_URL}
   producer:
     key-serializer: org.apache.kafka.common.serialization.StringSerializer
     value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer

@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value="/memorials/application")
+@RequestMapping(value="/applications")
 public class MemorialApplicationController {
   private final MemorialApplicationQueryService memorialApplicationQueryService;
   private final MemorialApplicationCommandService memorialApplicationCommandService;
