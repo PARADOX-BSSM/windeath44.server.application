@@ -42,7 +42,7 @@ public class MemorialApplicationCommandService {
     MemorialApplication memorialApplication = finder.findMemorialApplicationById(memorialApplicationId);
     // kafka로 오케스트레이션 서버에 memorial application approve 요청 with memorialApplicationId
     MemorialApplicationAvroSchema memorialApplicationAvroSchema = memorialApplicationMapper.toMemorialApplicationAvroSchema(memorialApplication, userId);
-    kafkaProducer.send("memorial-application-", memorialApplicationAvroSchema);
+    kafkaProducer.send("memorial-application-approved-request", memorialApplicationAvroSchema);
   }
 
   private void restMemorialApplicationRejected(MemorialApplication memorialApplication) {
