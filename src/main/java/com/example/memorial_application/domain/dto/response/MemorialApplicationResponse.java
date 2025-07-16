@@ -1,8 +1,8 @@
 package com.example.memorial_application.domain.dto.response;
 
 import com.example.memorial_application.domain.model.MemorialApplicationState;
+import java.time.LocalDate;
 
-import java.time.LocalDateTime;
 public record MemorialApplicationResponse (
         // 유저 정보
         String userId,
@@ -10,7 +10,7 @@ public record MemorialApplicationResponse (
         Long characterId,
         //신청 정보
         String content,
-        LocalDateTime createdAt,
+        LocalDate createdAt,
         MemorialApplicationState state,
         Long likes,
         boolean userDidLike

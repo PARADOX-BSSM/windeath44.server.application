@@ -19,16 +19,11 @@ public interface MemorialApplicationRepository extends JpaRepository<MemorialApp
   @Query(value = "update MemorialApplication m set m.state = 'REJECTED' where m.characterId = :characterId and m.memorialApplicationId != :memorialApplicationId")
   void updateStateToRejectedByCharacterId(@Param("memorialApplicationId") Long memorialApplicationId, @Param("characterId") Long characterId);
 
-  @Query(value = "select m from MemorialApplication m order by m.likes desc")
-  List<MemorialApplication> findAllSortByLikes();
-
   @Query(value = "select m from MemorialApplication m where m.memorialApplicationId > :cursorId order by m.memorialApplicationId asc")
   Slice<MemorialApplication> findPageableByCursor(@Param("cursorId") Long cursorId, Pageable pageable);
 
   @Query(value = "select m from MemorialApplication m order by m.memorialApplicationId asc")
   Slice<MemorialApplication> findPageable(Pageable pageable);
-
-  Optional<MemorialApplication> findByCharacterId(Long characterId);
 
   Optional<MemorialApplication> findByUserIdAndCharacterId(String applicantId, Long characterId);
 
@@ -39,5 +34,11 @@ public interface MemorialApplicationRepository extends JpaRepository<MemorialApp
 
   @Query("select m from MemorialApplication m where m.userId = :userId and m.memorialApplicationId < :cursorId order by m.memorialApplicationId desc")
   Slice<MemorialApplication> findMyApplicationPageableByCursorId(@Param("userId") String userId, @Param("cursorId") Long cursorId, Pageable pageable);
+
+  @Query(value = "select m from MemorialApplication m where m.characterId = :characterId order by m.memorialApplicationId desc")
+  Slice<MemorialApplication> findByCharacterId(Long characterId, Pageable pageable);
+
+  @Query(value = "select m from MemorialApplication m where m.characterId = :characterId and m.memorialApplicationId <= :cursorId order by m.memorialApplicationId desc")
+  Slice<MemorialApplication> findByCharacterIdAndCursorId(Long characterId, Pageable pageable, Long cursorId);
 }
 
