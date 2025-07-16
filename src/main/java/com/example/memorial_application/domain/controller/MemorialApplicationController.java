@@ -57,8 +57,8 @@ public class MemorialApplicationController {
   }
 
   @GetMapping
-  public ResponseEntity<ResponseDto<CursorPage<MemorialApplicationListResponse>>> findByCursor(@RequestParam(value = "cursorId", required = false) Long cursorId, @RequestParam("size") int size) {
-    CursorPage<MemorialApplicationListResponse> memorialApplicationResponse = memorialApplicationQueryService.findByCursor(cursorId, size);
+  public ResponseEntity<ResponseDto<CursorPage<MemorialApplicationListResponse>>> findByCursor(@RequestParam(value = "cursorId", required = false) Long cursorId, @RequestParam("size") int size, @RequestParam(value="memorizingCode", required = false) Integer memorizingCode) {
+    CursorPage<MemorialApplicationListResponse> memorialApplicationResponse = memorialApplicationQueryService.findByCursor(cursorId, size, memorizingCode);
     ResponseDto<CursorPage<MemorialApplicationListResponse>> responseDto = HttpUtil.success("find memorials application with cursor", memorialApplicationResponse);
     return ResponseEntity.ok(responseDto);
   }
@@ -85,7 +85,7 @@ public class MemorialApplicationController {
             .status(HttpStatus.ACCEPTED)
             .body(responseDto);
   }
-  
+
   @PatchMapping("/cancel/{memorial-application-id}")
   public ResponseEntity<ResponseDto<Void>> cancel(@PathVariable("memorial-application-id") Long memorialApplicationId) {
     memorialApplicationCommandService.reject(memorialApplicationId);

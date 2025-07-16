@@ -4,6 +4,7 @@ import com.example.memorial_application.domain.model.MemorialApplication;
 import com.example.memorial_application.domain.model.MemorialApplicationLikesId;
 import com.example.memorial_application.domain.mapper.MemorialApplicationLikesMapper;
 import com.example.memorial_application.domain.mapper.MemorialApplicationMapper;
+import com.example.memorial_application.domain.model.MemorialApplicationState;
 import com.example.memorial_application.domain.repository.MemorialApplicationLikesRepository;
 import com.example.memorial_application.domain.repository.MemorialApplicationRepository;
 import com.example.memorial_application.domain.dto.response.MemorialApplicationListResponse;
@@ -41,15 +42,29 @@ public class MemorialApplicationQueryService  {
   }
 
 
-  public CursorPage<MemorialApplicationListResponse> findByCursor(Long cursorId, int size) {
-    Pageable pageable = PageRequest.of(0, size + 1);
+  public CursorPage<MemorialApplicationListResponse> findByCursor(Long cursorId, int size, Integer memorizingCode) {
+    Pageable pageable = PageRequest.of(0, size);
 
-    Slice<MemorialApplication> memorialApplicationSlice = cursorId == null
-            ? memorialApplicationRepository.findPageable(pageable)
-            : memorialApplicationRepository.findPageableByCursor(cursorId, pageable);
+    MemorialApplicationState memorialzing = MemorialApplicationState.isMemorializing(memorizingCode);
+    Slice<MemorialApplication> memorialApplicationSlice = getMemorialApplications(cursorId, memorialzing, pageable);
 
     List<MemorialApplicationListResponse> memorialApplicationsList = memorialApplicationMapper.toMemorialApplicationPageListResponse(memorialApplicationSlice);
     return new CursorPage<>(memorialApplicationsList, memorialApplicationSlice.hasNext());
+  }
+
+  private Slice<MemorialApplication> getMemorialApplications(Long cursorId, MemorialApplicationState memorialzing, Pageable pageable) {
+    Slice<MemorialApplication> memorialApplicationSlice;
+    if (memorialzing == null) {
+      memorialApplicationSlice = cursorId == null
+              ? memorialApplicationRepository.findPageable(pageable)
+              : memorialApplicationRepository.findPageableByCursor(cursorId, pageable);
+    }
+    else {
+      memorialApplicationSlice = cursorId == null
+              ? memorialApplicationRepository.findPageableByMemorizing(pageable, memorialzing)
+              : memorialApplicationRepository.findPageableByCursorAndMemorizing(cursorId, pageable, memorialzing);
+    }
+    return memorialApplicationSlice;
   }
 
   public CursorPage<MemorialApplicationListResponse> findByCharacterId(Long characterId, Long cursorId, int size) {

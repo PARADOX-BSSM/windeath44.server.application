@@ -1,6 +1,7 @@
 package com.example.memorial_application.domain.repository;
 
 import com.example.memorial_application.domain.model.MemorialApplication;
+import com.example.memorial_application.domain.model.MemorialApplicationState;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,11 +20,18 @@ public interface MemorialApplicationRepository extends JpaRepository<MemorialApp
   @Query(value = "update MemorialApplication m set m.state = 'REJECTED' where m.characterId = :characterId and m.memorialApplicationId != :memorialApplicationId")
   void updateStateToRejectedByCharacterId(@Param("memorialApplicationId") Long memorialApplicationId, @Param("characterId") Long characterId);
 
+  @Query(value = "select m from MemorialApplication m where m.state = :state and m.memorialApplicationId > :cursorId order by m.memorialApplicationId asc")
+  Slice<MemorialApplication> findPageableByCursorAndMemorizing(@Param("cursorId") Long cursorId, Pageable pageable, MemorialApplicationState state);
+
+  @Query(value = "select m from MemorialApplication m where m.state = :state order by m.memorialApplicationId asc")
+  Slice<MemorialApplication> findPageableByMemorizing(Pageable pageable, MemorialApplicationState state);
+
   @Query(value = "select m from MemorialApplication m where m.memorialApplicationId > :cursorId order by m.memorialApplicationId asc")
   Slice<MemorialApplication> findPageableByCursor(@Param("cursorId") Long cursorId, Pageable pageable);
 
   @Query(value = "select m from MemorialApplication m order by m.memorialApplicationId asc")
   Slice<MemorialApplication> findPageable(Pageable pageable);
+
 
   Optional<MemorialApplication> findByUserIdAndCharacterId(String applicantId, Long characterId);
 
