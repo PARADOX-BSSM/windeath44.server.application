@@ -16,6 +16,7 @@ public class MemorialApplicationLikesController {
 
   @PostMapping("/{memorial-application-id}")
   public ResponseEntity<ResponseDto<Void>> like(@RequestHeader("user-id") String userId, @PathVariable("memorial-application-id") Long memorialApplicationId) {
+    userId = userId.substring(2, userId.length() - 2);
     memorialApplicationLikesService.like(userId, memorialApplicationId);
     ResponseDto<Void> responseDto = HttpUtil.success("like memorial application");
     return ResponseEntity
@@ -25,6 +26,7 @@ public class MemorialApplicationLikesController {
 
   @DeleteMapping("/{memorial-application-id}")
   public ResponseEntity<ResponseDto<Void>> unlike(@RequestHeader("user-id") String userId, @PathVariable("memorial-application-id") Long memorialApplicationId) {
+    userId = userId.substring(2, userId.length() - 2);
     memorialApplicationLikesService.unlike(userId, memorialApplicationId);
     ResponseDto<Void> responseDto = HttpUtil.success("unlike memorial application");
     return ResponseEntity

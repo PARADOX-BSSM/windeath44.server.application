@@ -26,6 +26,7 @@ public class MemorialApplicationController {
 
   @PostMapping("/apply")
   public ResponseEntity<ResponseDto<Void>> apply(@RequestHeader("user-id") String userId, @RequestBody @Valid MemorialApplicationRequest request) {
+    userId = userId.substring(2, userId.length() - 2);
     Long characterId = request.characterId();
     String content = request.content();
     memorialApplicationCommandService.apply(userId, characterId, content);
@@ -51,6 +52,7 @@ public class MemorialApplicationController {
 
   @GetMapping("/my")
   public ResponseEntity<ResponseDto<CursorPage<MemorialApplicationListResponse>>> findByUserId(@RequestHeader("user-id") String userId, @RequestParam(value = "cursorId", required = false) Long cursorId, @RequestParam("size") int size) {
+    userId = userId.substring(2, userId.length() - 2);
     CursorPage<MemorialApplicationListResponse> memorialApplicationResponse = memorialApplicationQueryService.findMyApplicationByCursor(userId, cursorId, size);
     ResponseDto<CursorPage<MemorialApplicationListResponse>> responseDto = HttpUtil.success("find my memorial application", memorialApplicationResponse);
     return ResponseEntity.ok(responseDto);
@@ -72,6 +74,7 @@ public class MemorialApplicationController {
 
   @GetMapping("/{memorial-application-id}")
   public ResponseEntity<ResponseDto<MemorialApplicationResponse>> findById(@RequestHeader(value = "user-id", required = false) String userId, @PathVariable("memorial-application-id") Long memorialApplicationId) {
+    userId = userId.substring(2, userId.length() - 2);
     MemorialApplicationResponse memorialApplicationResponse = memorialApplicationQueryService.findById(memorialApplicationId, userId);
     ResponseDto<MemorialApplicationResponse> responseDto = HttpUtil.success("find memorial application", memorialApplicationResponse);
     return ResponseEntity.ok(responseDto);
