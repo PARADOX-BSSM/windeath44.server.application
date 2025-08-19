@@ -11,6 +11,55 @@ spring:
     hibernate:
       ddl-auto: update
     database-platform: org.hibernate.dialect.MySQL8Dialect
+  kafka:
+
+    # ===== 외부 접속을 위한 설정 (필요시 주석 해제) =====
+    bootstrap-servers: ${KAFKA_URL}
+    # =============================================
+    security:
+      protocol: SSL
+    properties:
+      security.protocol: SSL
+      ssl.truststore.location: ${SSL_TRUSTSTORE_LOCATION}
+      ssl.truststore.password: ${SSL_TRUSTSTORE_PASSWORD}
+      ssl.truststore.type: ${SSL_TRUSTSTORE_TYPE}
+      ssl.keystore.location: ${SSL_KEYSTORE_LOCATION}
+      ssl.keystore.password: ${SSL_KEYSTORE_PASSWORD}
+      ssl.keystore.type: ${SSL_KEYSTORE_TYPE}
+      ssl.endpoint.identification.algorithm: ""
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+      properties:
+        schema.registry.url: ${SCHEMA_REGISTRY_URL}
+        security.protocol: SSL
+        ssl.truststore.location: ${SSL_TRUSTSTORE_LOCATION}
+        ssl.truststore.password: ${SSL_TRUSTSTORE_PASSWORD}
+        ssl.truststore.type: ${SSL_TRUSTSTORE_TYPE}
+        ssl.keystore.location: ${SSL_KEYSTORE_LOCATION}
+        ssl.keystore.password: ${SSL_KEYSTORE_PASSWORD}
+        ssl.keystore.type: ${SSL_KEYSTORE_TYPE}
+        ssl.endpoint.identification.algorithm: ""
+
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      group-id: orchestration
+      auto-offset-reset: earliest  # 추가 권장 설정
+      enable-auto-commit: false    # 추가 권장 설정
+      properties:
+        schema.registry.url: ${SCHEMA_REGISTRY_URL}
+        specific.avro.reader: true
+        security.protocol: SSL
+        ssl.truststore.location: ${SSL_TRUSTSTORE_LOCATION}
+        ssl.truststore.password: ${SSL_TRUSTSTORE_PASSWORD}
+        ssl.truststore.type: ${SSL_TRUSTSTORE_TYPE}
+        ssl.keystore.location: ${SSL_KEYSTORE_LOCATION}
+        ssl.keystore.password: ${SSL_KEYSTORE_PASSWORD}
+        ssl.keystore.type: ${SSL_KEYSTORE_TYPE}
+        ssl.endpoint.identification.algorithm: ""
+
 
 
 server:
@@ -24,19 +73,6 @@ grpc:
       address: ${GRPC_ANIME_SERVER_ADDRESS}
       negotiationType: "plaintext"
 
-
-
-kafka:
-  bootstrap-servers: ${KAFKA_URL}
-  schema-registry-url: ${SCHEMA_REGISTRY_URL}
-  producer:
-    key-serializer: org.apache.kafka.common.serialization.StringSerializer
-    value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
-  consumer:
-    auto-offset-reset: earliest
-    key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-    value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
-    specific-avro-reader: true
 logging:
   level:
     com.example.memorial_application: trace
