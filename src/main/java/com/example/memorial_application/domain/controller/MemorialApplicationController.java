@@ -26,9 +26,7 @@ public class MemorialApplicationController {
 
   @PostMapping("/apply")
   public ResponseEntity<ResponseDto<Void>> apply(@RequestHeader("user-id") String userId, @RequestBody @Valid MemorialApplicationRequest request) {
-    Long characterId = request.characterId();
-    String content = request.content();
-    memorialApplicationCommandService.apply(userId, characterId, content);
+    memorialApplicationCommandService.apply(userId, request);
     ResponseDto<Void> responseDto = HttpUtil.success("apply memorial application");
     return ResponseEntity
             .status(HttpStatus.CREATED)
