@@ -3,6 +3,7 @@ package com.example.memorial_application.domain.service;
 import com.example.avro.CharacterAvroSchema;
 import com.example.avro.MemorialApplicationAvroSchema;
 import com.example.avro.MemorialAvroSchema;
+import com.example.memorial_application.domain.dto.request.MemorialApplicationRequest;
 import com.example.memorial_application.domain.dto.request.MemorialApplicationUpadateRequest;
 import com.example.memorial_application.domain.exception.AlreadyMemorialApplicationException;
 import com.example.memorial_application.domain.exception.NotFoundMemorialApplicationException;
@@ -25,11 +26,16 @@ public class MemorialApplicationCommandService {
   private final GrpcClientService grpcClient;
   private final KafkaProducer kafkaProducer;
 
-  public void apply(String userId, Long characterId, String content) {
+  public void apply(String userId, MemorialApplicationRequest memorialApplicationRequest) {
+    Long characterId = memorialApplicationRequest.characterId();
+    String content = memorialApplicationRequest.content();
+
     MemorialApplication memorialApplication = memorialApplicationMapper.toMemorialApplication(userId, characterId, content);
+
     // 만약 사용자가 해당 캐릭터에 대한 추모관을 이미 신청한 경우, 실패
     // 중복 신청은 안됨
-    if (memorialApplicationRepository.existsByUserIdAndCharacterId(userId, characterId))
+    boolean existsMemorialApplication = memorialApplicationRepository.existsByUserIdAndCharacterId(userId, characterId);
+    if (existsMemorialApplication)
       throw AlreadyMemorialApplicationException.getInstance();
 
     // 만약 해당 캐릭터가 이미 추모중이라면 apply 실패
@@ -41,6 +47,7 @@ public class MemorialApplicationCommandService {
   public void approve(Long memorialApplicationId, String userId) {
     MemorialApplication memorialApplication = finder.findMemorialApplicationById(memorialApplicationId);
     // kafka로 오케스트레이션 서버에 memorial application approve 요청 with memorialApplicationId
+    grpcClient.validateNotAlreadyMemorialized(memorialApplication.getCharacterId());
     MemorialApplicationAvroSchema memorialApplicationAvroSchema = memorialApplicationMapper.toMemorialApplicationAvroSchema(memorialApplication, userId);
     kafkaProducer.send("memorial-application-approved-request", memorialApplicationAvroSchema);
   }

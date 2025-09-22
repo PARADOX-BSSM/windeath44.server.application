@@ -3,6 +3,7 @@ package com.example.memorial_application.domain.service;
 import com.example.avro.CharacterAvroSchema;
 import com.example.avro.MemorialApplicationAvroSchema;
 import com.example.avro.MemorialAvroSchema;
+import com.example.memorial_application.domain.dto.request.MemorialApplicationRequest;
 import com.example.memorial_application.domain.exception.AlreadyMemorialApplicationException;
 import com.example.memorial_application.domain.exception.NotFoundMemorialApplicationException;
 import com.example.memorial_application.domain.mapper.MemorialApplicationMapper;
@@ -53,6 +54,7 @@ class MemorialApplicationApproveServiceTest {
     private MemorialApplicationAvroSchema memorialApplicationAvroSchema;
     private CharacterAvroSchema characterAvroSchema;
     private MemorialAvroSchema memorialAvroSchema;
+    private MemorialApplicationRequest memorialApplicationRequest;
 
     @BeforeEach
     void setUp() {
@@ -64,6 +66,7 @@ class MemorialApplicationApproveServiceTest {
         memorialApplicationAvroSchema = mock(MemorialApplicationAvroSchema.class);
         characterAvroSchema = mock(CharacterAvroSchema.class);
         memorialAvroSchema = mock(MemorialAvroSchema.class);
+        memorialApplicationRequest = new MemorialApplicationRequest(1L, "example");
 
         when(memorialApplication.getMemorialApplicationId()).thenReturn(memorialApplicationId);
         when(memorialApplication.getCharacterId()).thenReturn(characterId);
@@ -78,7 +81,7 @@ class MemorialApplicationApproveServiceTest {
         doNothing().when(grpcClient).validateNotAlreadyMemorialized(characterId);
 
         // Act
-        memorialApplicationApproveService.apply(userId, characterId, content);
+        memorialApplicationApproveService.apply(userId, memorialApplicationRequest);
 
         // Assert
         verify(memorialApplicationRepository).save(memorialApplication);
@@ -93,7 +96,7 @@ class MemorialApplicationApproveServiceTest {
 
         // Act & Assert
         assertThrows(AlreadyMemorialApplicationException.class, () -> 
-            memorialApplicationApproveService.apply(userId, characterId, content)
+            memorialApplicationApproveService.apply(userId, memorialApplicationRequest)
         );
         verify(memorialApplicationRepository, never()).save(any(MemorialApplication.class));
     }
