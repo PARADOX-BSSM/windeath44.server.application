@@ -24,6 +24,16 @@ public class MemorialApplicationController {
   private final MemorialApplicationQueryService memorialApplicationQueryService;
   private final MemorialApplicationCommandService memorialApplicationCommandService;
 
+  /**
+   * 사용자의 추모 신청을 생성한다.
+   *
+   * 요청자의 ID를 나타내는 HTTP 헤더 "user-id"와 신청 정보를 담은 요청 본문을 받아 신청을 생성하고
+   * 성공 메시지와 함께 HTTP 201 Created 응답을 반환한다.
+   *
+   * @param userId 요청한 사용자의 ID (HTTP 헤더 "user-id")
+   * @param request 생성할 추모 신청 정보가 담긴 요청 DTO
+   * @return 생성 성공 시 HTTP 201 상태와 빈 페이로드의 성공 응답(ResponseDto<Void>)
+   */
   @PostMapping("/apply")
   public ResponseEntity<ResponseDto<Void>> apply(@RequestHeader("user-id") String userId, @RequestBody @Valid MemorialApplicationRequest request) {
     memorialApplicationCommandService.apply(userId, request);

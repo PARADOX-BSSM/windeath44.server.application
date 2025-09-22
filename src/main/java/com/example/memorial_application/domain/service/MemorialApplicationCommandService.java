@@ -26,6 +26,17 @@ public class MemorialApplicationCommandService {
   private final GrpcClientService grpcClient;
   private final KafkaProducer kafkaProducer;
 
+  /**
+   * 지정한 사용자(userId)가 특정 캐릭터에 대한 추모관 신청을 생성하여 저장한다.
+   *
+   * 주어진 요청에서 characterId와 content를 추출해 엔티티로 변환한 뒤, 동일 사용자-캐릭터에 대한
+   * 기존 신청이 있으면 AlreadyMemorialApplicationException을 던지고,
+   * gRPC를 통해 해당 캐릭터가 이미 추모 상태인지 검증한 후 저장한다.
+   *
+   * @param userId 요청을 생성하는 사용자 식별자
+   * @param memorialApplicationRequest 캐릭터 ID와 신청 내용(content)을 포함한 요청 객체
+   * @throws AlreadyMemorialApplicationException 동일 사용자와 캐릭터에 대한 신청이 이미 존재할 경우 발생
+   */
   public void apply(String userId, MemorialApplicationRequest memorialApplicationRequest) {
     Long characterId = memorialApplicationRequest.characterId();
     String content = memorialApplicationRequest.content();
@@ -44,6 +55,15 @@ public class MemorialApplicationCommandService {
   }
 
 
+  /**
+   * 지정한 장례 신청을 승인 요청하고 승인 정보를 오케스트레이션에 전송한다.
+   *
+   * <p>주어진 ID로 장례 신청을 조회한 뒤, 대상 캐릭터가 이미 기념 처리되지 않았는지 검증하고,
+   * 승인 정보를 Avro 스키마로 변환하여 "memorial-application-approved-request" Kafka 토픽으로 발행한다.
+   *
+   * @param memorialApplicationId 승인할 장례 신청의 식별자
+   * @param userId 승인 요청을 생성한 사용자(요청자)의 식별자 — Avro 메시지에 포함된다
+   */
   public void approve(Long memorialApplicationId, String userId) {
     MemorialApplication memorialApplication = finder.findMemorialApplicationById(memorialApplicationId);
     // kafka로 오케스트레이션 서버에 memorial application approve 요청 with memorialApplicationId
