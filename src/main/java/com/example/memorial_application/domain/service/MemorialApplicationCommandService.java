@@ -65,15 +65,16 @@ public class MemorialApplicationCommandService {
   }
 
   @Transactional
-  public void approve(MemorialApplicationAvroSchema message) {
-    String applicantId = message.getApplicantId();
+  public void approve(MemorialAvroSchema message) {
+    String applicantId = message.getWriterId();
     Long characterId = message.getCharacterId();
     MemorialApplication memorialApplication = findApplicationByUserIdAndCharacterId(applicantId, characterId);
     memorialApplication.approve();
     // pending 상태의 같은 캐릭터에 대한 요청들을 rejected 상태로 변환
     restMemorialApplicationRejected(memorialApplication);
 
-    kafkaProducer.send("memorial-creation-orchestration-complete", message);
+    MemorialApplicationAvroSchema memorialApplicationAvroSchema = memorialApplicationMapper.toMemorialApplicationAvroSchema(memorialApplication, applicantId);
+    kafkaProducer.send("memorial-creation-orchestration-complete", memorialApplicationAvroSchema);
   }
 
   @Transactional

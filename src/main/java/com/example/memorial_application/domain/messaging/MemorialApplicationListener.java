@@ -14,7 +14,7 @@ public class MemorialApplicationListener {
   private final MemorialApplicationCommandService memorialApplicationApproveService;
 
   @KafkaListener(topics = "memorial-application-approved-response", groupId = "memorial")
-  public void listenApproved(MemorialApplicationAvroSchema message) {
+  public void listenApproved(MemorialAvroSchema message) {
     memorialApplicationApproveService.approve(message);
   }
 
