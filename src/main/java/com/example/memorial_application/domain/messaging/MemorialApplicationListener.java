@@ -1,6 +1,8 @@
 package com.example.memorial_application.domain.messaging;
 
+import com.example.avro.MemorialApplicationAvroSchema;
 import com.example.avro.MemorialAvroSchema;
+import com.example.memorial_application.domain.model.MemorialApplication;
 import com.example.memorial_application.domain.service.MemorialApplicationCommandService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;

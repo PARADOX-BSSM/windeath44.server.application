@@ -1,5 +1,4 @@
 package com.example.memorial_application.domain.controller;
-
 import com.example.memorial_application.domain.dto.request.MemorialApplicationUpadateRequest;
 import com.example.memorial_application.domain.dto.request.MemorialApplicationRequest;
 import com.example.memorial_application.domain.dto.response.MemorialApplicationResponse;
@@ -15,8 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.memorial_application.domain.dto.response.MemorialApplicationListResponse;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value="/applications")
@@ -26,9 +23,7 @@ public class MemorialApplicationController {
 
   @PostMapping("/apply")
   public ResponseEntity<ResponseDto<Void>> apply(@RequestHeader("user-id") String userId, @RequestBody @Valid MemorialApplicationRequest request) {
-    Long characterId = request.characterId();
-    String content = request.content();
-    memorialApplicationCommandService.apply(userId, characterId, content);
+    memorialApplicationCommandService.apply(userId, request);
     ResponseDto<Void> responseDto = HttpUtil.success("apply memorial application");
     return ResponseEntity
             .status(HttpStatus.CREATED)
