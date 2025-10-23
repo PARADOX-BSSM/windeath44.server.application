@@ -1,7 +1,5 @@
 package com.example.memorial_application.domain.service;
 
-import com.example.avro.MemorialApplicationAvroSchema;
-import com.example.avro.MemorialAvroSchema;
 import com.example.memorial_application.domain.dto.request.MemorialApplicationRequest;
 import com.example.memorial_application.domain.dto.request.MemorialApplicationUpadateRequest;
 import com.example.memorial_application.domain.exception.AlreadyMemorialApplicationException;
@@ -14,6 +12,8 @@ import com.example.memorial_application.global.producer.KafkaProducer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import windeath44.server.application.avro.MemorialApplicationAvroSchema;
+import windeath44.server.memorial.avro.MemorialAvroSchema;
 
 @Service
 @RequiredArgsConstructor

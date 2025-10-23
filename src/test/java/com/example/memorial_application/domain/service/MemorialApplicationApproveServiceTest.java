@@ -1,8 +1,5 @@
 package com.example.memorial_application.domain.service;
 
-import com.example.avro.CharacterAvroSchema;
-import com.example.avro.MemorialApplicationAvroSchema;
-import com.example.avro.MemorialAvroSchema;
 import com.example.memorial_application.domain.dto.request.MemorialApplicationRequest;
 import com.example.memorial_application.domain.exception.AlreadyMemorialApplicationException;
 import com.example.memorial_application.domain.exception.NotFoundMemorialApplicationException;
@@ -18,6 +15,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import windeath44.server.application.avro.MemorialApplicationAvroSchema;
+import windeath44.server.memorial.avro.MemorialAvroSchema;
 
 import java.util.Optional;
 
@@ -52,7 +51,6 @@ class MemorialApplicationApproveServiceTest {
     private Long memorialApplicationId;
     private MemorialApplication memorialApplication;
     private MemorialApplicationAvroSchema memorialApplicationAvroSchema;
-    private CharacterAvroSchema characterAvroSchema;
     private MemorialAvroSchema memorialAvroSchema;
     private MemorialApplicationRequest memorialApplicationRequest;
 
@@ -64,7 +62,6 @@ class MemorialApplicationApproveServiceTest {
         memorialApplicationId = 1L;
         memorialApplication = mock(MemorialApplication.class);
         memorialApplicationAvroSchema = mock(MemorialApplicationAvroSchema.class);
-        characterAvroSchema = mock(CharacterAvroSchema.class);
         memorialAvroSchema = mock(MemorialAvroSchema.class);
         memorialApplicationRequest = new MemorialApplicationRequest(1L, "example");
 
