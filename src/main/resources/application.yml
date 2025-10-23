@@ -32,7 +32,11 @@ kafka:
   producer:
     key-serializer: org.apache.kafka.common.serialization.StringSerializer
     value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
-  consumer:
+    properties:
+      schema.registry.url: ${SCHEMA_REGISTRY_URL}
+      auto.register.schemas: true
+      value.subject.name.strategy: io.confluent.kafka.serializers.subject.TopicNameStrategy
+    consumer:
     auto-offset-reset: earliest
     key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
     value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
