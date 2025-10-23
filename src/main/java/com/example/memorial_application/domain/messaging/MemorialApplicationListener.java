@@ -1,6 +1,5 @@
 package com.example.memorial_application.domain.messaging;
 
-import com.example.avro.CharacterAvroSchema;
 import com.example.avro.MemorialAvroSchema;
 import com.example.memorial_application.domain.service.MemorialApplicationCommandService;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +12,7 @@ public class MemorialApplicationListener {
   private final MemorialApplicationCommandService memorialApplicationApproveService;
 
   @KafkaListener(topics = "memorial-application-approved-response", groupId = "memorial")
-  public void listenApproved(CharacterAvroSchema message) {
+  public void listenApproved(MemorialAvroSchema message) {
     memorialApplicationApproveService.approve(message);
   }
 

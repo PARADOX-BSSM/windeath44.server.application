@@ -59,8 +59,8 @@ public class MemorialApplicationCommandService {
   }
 
   @Transactional
-  public void approve(CharacterAvroSchema message) {
-    String applicantId = message.getApplicantId();
+  public void approve(MemorialAvroSchema message) {
+    String applicantId = message.getWriterId();
     Long characterId = message.getCharacterId();
 
     MemorialApplication memorialApplication = findApplicationByUserIdAndCharacterId(applicantId, characterId);
