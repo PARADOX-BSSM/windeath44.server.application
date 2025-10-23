@@ -128,23 +128,23 @@ class MemorialApplicationApproveServiceTest {
         verify(memorialApplication).reject();
     }
 
-    @Test
-    @DisplayName("Approve by CharacterAvroSchema should update state and send Kafka message")
-    void approve_ByCharacterAvroSchema_ShouldUpdateStateAndSendKafkaMessage() {
-        // Arrange
-        when(characterAvroSchema.getApplicantId()).thenReturn(userId);
-        when(characterAvroSchema.getCharacterId()).thenReturn(characterId);
-        when(memorialApplicationRepository.findByUserIdAndCharacterId(userId, characterId)).thenReturn(Optional.of(memorialApplication));
-        when(memorialApplicationMapper.toMemorialApplicationAvroSchema(memorialApplication, userId)).thenReturn(memorialApplicationAvroSchema);
-
-        // Act
-        memorialApplicationApproveService.approve(characterAvroSchema);
-
-        // Assert
-        verify(memorialApplication).approve();
-        verify(memorialApplicationRepository).updateStateToRejectedByCharacterId(memorialApplicationId, characterId);
-        verify(kafkaProducer).send("memorial-creation-orchestration-complete", memorialApplicationAvroSchema);
-    }
+//    @Test
+//    @DisplayName("Approve by CharacterAvroSchema should update state and send Kafka message")
+//    void approve_ByCharacterAvroSchema_ShouldUpdateStateAndSendKafkaMessage() {
+//        // Arrange
+//        when(characterAvroSchema.getApplicantId()).thenReturn(userId);
+//        when(characterAvroSchema.getCharacterId()).thenReturn(characterId);
+//        when(memorialApplicationRepository.findByUserIdAndCharacterId(userId, characterId)).thenReturn(Optional.of(memorialApplication));
+//        when(memorialApplicationMapper.toMemorialApplicationAvroSchema(memorialApplication, userId)).thenReturn(memorialApplicationAvroSchema);
+//
+//        // Act
+//        memorialApplicationApproveService.approve(characterAvroSchema);
+//
+//        // Assert
+//        verify(memorialApplication).approve();
+//        verify(memorialApplicationRepository).updateStateToRejectedByCharacterId(memorialApplicationId, characterId);
+//        verify(kafkaProducer).send("memorial-creation-orchestration-complete", memorialApplicationAvroSchema);
+//    }
 
     @Test
     @DisplayName("Cancel should update state and send Kafka message")

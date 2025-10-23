@@ -1,5 +1,4 @@
 package com.example.memorial_application.domain.controller;
-
 import com.example.memorial_application.domain.dto.request.MemorialApplicationUpadateRequest;
 import com.example.memorial_application.domain.dto.request.MemorialApplicationRequest;
 import com.example.memorial_application.domain.dto.response.MemorialApplicationResponse;
@@ -14,8 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.memorial_application.domain.dto.response.MemorialApplicationListResponse;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor

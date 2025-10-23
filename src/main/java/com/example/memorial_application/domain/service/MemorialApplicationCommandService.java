@@ -1,6 +1,5 @@
 package com.example.memorial_application.domain.service;
 
-import com.example.avro.CharacterAvroSchema;
 import com.example.avro.MemorialApplicationAvroSchema;
 import com.example.avro.MemorialAvroSchema;
 import com.example.memorial_application.domain.dto.request.MemorialApplicationRequest;
@@ -66,17 +65,16 @@ public class MemorialApplicationCommandService {
   }
 
   @Transactional
-  public void approve(CharacterAvroSchema message) {
-    String applicantId = message.getApplicantId();
+  public void approve(MemorialAvroSchema message) {
+    String applicantId = message.getWriterId();
     Long characterId = message.getCharacterId();
-
     MemorialApplication memorialApplication = findApplicationByUserIdAndCharacterId(applicantId, characterId);
     memorialApplication.approve();
     // pending 상태의 같은 캐릭터에 대한 요청들을 rejected 상태로 변환
     restMemorialApplicationRejected(memorialApplication);
 
-    MemorialApplicationAvroSchema memorialApplicationAvroShema = memorialApplicationMapper.toMemorialApplicationAvroSchema(memorialApplication, applicantId);
-    kafkaProducer.send("memorial-creation-orchestration-complete", memorialApplicationAvroShema);
+    MemorialApplicationAvroSchema memorialApplicationAvroSchema = memorialApplicationMapper.toMemorialApplicationAvroSchema(memorialApplication, applicantId);
+    kafkaProducer.send("memorial-creation-orchestration-complete", memorialApplicationAvroSchema);
   }
 
   @Transactional
