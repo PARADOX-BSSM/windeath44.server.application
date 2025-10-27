@@ -1,8 +1,5 @@
 package com.example.memorial_application.domain.mapper;
 
-
-import com.example.avro.MemorialApplicationAvroSchema;
-import com.example.avro.MemorialAvroSchema;
 import com.example.memorial_application.domain.model.MemorialApplication;
 import com.example.memorial_application.domain.model.MemorialApplicationState;
 import com.example.memorial_application.domain.dto.response.MemorialApplicationListResponse;
@@ -10,6 +7,7 @@ import com.example.memorial_application.domain.dto.response.MemorialApplicationR
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Component;
+import windeath44.server.application.avro.MemorialApplicationAvroSchema;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
