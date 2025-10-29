@@ -45,7 +45,7 @@ public class MemorialApplicationController {
 
   @GetMapping("/my")
   public ResponseEntity<ResponseDto<CursorPage<MemorialApplicationResponse>>> findByUserId(
-          @RequestHeader("user-id") String userId,
+          @RequestHeader(value = "user-id", required = false) String userId,
           @RequestParam(value = "cursorId", required = false) Long cursorId,
           @RequestParam("size") int size
   ) {
@@ -56,7 +56,7 @@ public class MemorialApplicationController {
 
   @GetMapping
   public ResponseEntity<ResponseDto<CursorPage<MemorialApplicationResponse>>> findByCursor(
-          @RequestHeader("user-id") String userId,
+          @RequestHeader(value = "user-id", required = false) String userId,
           @RequestParam(value = "cursorId", required = false) Long cursorId,
           @RequestParam("size") int size,
           @RequestParam(value="memorizingCode", required = false) Integer memorizingCode
@@ -68,7 +68,7 @@ public class MemorialApplicationController {
 
   @GetMapping("/search")
   public ResponseEntity<ResponseDto<CursorPage<MemorialApplicationResponse>>> findByCharacterId(
-          @RequestHeader("user-id") String userId,
+          @RequestHeader(value = "user-id", required = false) String userId,
           @RequestParam("characterId") Long characterId,
           @RequestParam(value = "cursorId", required = false) Long cursorId,
           @RequestParam("size") int size
