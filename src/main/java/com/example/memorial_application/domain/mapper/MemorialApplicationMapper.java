@@ -2,7 +2,6 @@ package com.example.memorial_application.domain.mapper;
 
 import com.example.memorial_application.domain.model.MemorialApplication;
 import com.example.memorial_application.domain.model.MemorialApplicationState;
-import com.example.memorial_application.domain.dto.response.MemorialApplicationListResponse;
 import com.example.memorial_application.domain.dto.response.MemorialApplicationResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
@@ -10,9 +9,7 @@ import org.springframework.stereotype.Component;
 import windeath44.server.application.avro.MemorialApplicationAvroSchema;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.function.Function;
 
 @Component
 @RequiredArgsConstructor
@@ -27,23 +24,11 @@ public class MemorialApplicationMapper {
 
   }
 
-  public MemorialApplicationResponse toMemorialApplicationResponse(MemorialApplication memorialApplication, String viewerId) {
-    String userId = memorialApplication.getUserId();
-    Long characterId = memorialApplication.getCharacterId();
-    String content = memorialApplication.getContent();
-    LocalDate createdAt = memorialApplication.getCreatedAt();
-    MemorialApplicationState state = memorialApplication.getState();
-    Long likes = memorialApplication.getLikes();
-    
-    boolean didUserLiked = viewerId != null && memorialApplication.didUserLiked(viewerId);
 
-    return new MemorialApplicationResponse(userId, characterId, content, createdAt, state, likes, didUserLiked);
-  }
-
-  public List<MemorialApplicationListResponse> toMemorialApplicationPageListResponse(Slice<MemorialApplication> memorialApplicationSlice, String viewerId) {
+  public List<MemorialApplicationResponse> toMemorialApplicationPageListResponse(Slice<MemorialApplication> memorialApplicationSlice, String viewerId) {
     return memorialApplicationSlice.getContent()
             .stream()
-            .map(memorialApplication -> toMemorialApplicationListResponse(memorialApplication, viewerId))
+            .map(memorialApplication -> toMemorialApplicationResponse(memorialApplication, viewerId))
             .toList();
   }
 
@@ -62,14 +47,14 @@ public class MemorialApplicationMapper {
             .build();
   }
 
-  public List<MemorialApplicationListResponse> toMemorialApplicationResponse(Slice<MemorialApplication> memorialApplicationSlice, String viewerId) {
+  public List<MemorialApplicationResponse> toMemorialApplicationListResponse(Slice<MemorialApplication> memorialApplicationSlice, String viewerId) {
     return memorialApplicationSlice.getContent()
             .stream()
-            .map(memorialApplication -> toMemorialApplicationListResponse(memorialApplication, viewerId))
+            .map(memorialApplication -> toMemorialApplicationResponse(memorialApplication, viewerId))
             .toList();
   }
 
-  private MemorialApplicationListResponse toMemorialApplicationListResponse(MemorialApplication memorialApplication, String viewerId) {
+  public MemorialApplicationResponse toMemorialApplicationResponse(MemorialApplication memorialApplication, String viewerId) {
     String userId = memorialApplication.getUserId();
     Long characterId = memorialApplication.getCharacterId();
     String content = memorialApplication.getContent();
@@ -79,6 +64,6 @@ public class MemorialApplicationMapper {
     Long memorialApplicationId = memorialApplication.getMemorialApplicationId();
     boolean didUserLiked = viewerId != null && memorialApplication.didUserLiked(viewerId);
 
-    return new MemorialApplicationListResponse(userId, characterId, memorialApplicationId, content, createdAt, state, likes, didUserLiked);
+    return new MemorialApplicationResponse(userId, characterId, memorialApplicationId, content, createdAt, state, likes, didUserLiked);
   }
 }
