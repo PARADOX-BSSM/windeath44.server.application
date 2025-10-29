@@ -47,10 +47,15 @@ public class MemorialApplicationLikesService {
   }
 
   private MemorialApplicationLikes saveMemorialApplicationLike(MemorialApplicationLikesId memorialApplicationLikesId, Long memorialApplicationId) {
-    MemorialApplicationLikes memorialApplicationLike = memorialApplicationLikesMapper.toMemorialApplicationLike(memorialApplicationLikesId);
-    memorialApplicationLikesRepository.save(memorialApplicationLike);
 
     MemorialApplication memorialApplication = finder.findMemorialApplicationById(memorialApplicationId);
+
+    MemorialApplicationLikes memorialApplicationLike = memorialApplicationLikesMapper.toMemorialApplicationLike(
+            memorialApplicationLikesId,
+            memorialApplication
+    );
+    memorialApplicationLikesRepository.save(memorialApplicationLike);
+
     memorialApplication.incrementLikes();
     return memorialApplicationLike;
   }

@@ -2,7 +2,6 @@ package com.example.memorial_application.domain.mapper;
 
 import com.example.memorial_application.domain.model.MemorialApplication;
 import com.example.memorial_application.domain.model.MemorialApplicationState;
-import com.example.memorial_application.domain.dto.response.MemorialApplicationListResponse;
 import com.example.memorial_application.domain.dto.response.MemorialApplicationResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
@@ -10,9 +9,7 @@ import org.springframework.stereotype.Component;
 import windeath44.server.application.avro.MemorialApplicationAvroSchema;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.function.Function;
 
 @Component
 @RequiredArgsConstructor
@@ -27,33 +24,11 @@ public class MemorialApplicationMapper {
 
   }
 
-  public MemorialApplicationListResponse toMemorialApplicationListResponse(MemorialApplication memorialApplication) {
-    Long memorialApplicationId = memorialApplication.getMemorialApplicationId();
-    String userId = memorialApplication.getUserId();
-    Long characterId = memorialApplication.getCharacterId();
-    String content = memorialApplication.getContent();
-    LocalDate createdAt = memorialApplication.getCreatedAt();
-    MemorialApplicationState state = memorialApplication.getState();
-    Long likes = memorialApplication.getLikes();
 
-    return new MemorialApplicationListResponse(userId, characterId, memorialApplicationId, content, createdAt, state, likes);
-  }
-
-  public MemorialApplicationResponse toMemorialApplicationResponse(MemorialApplication memorialApplication, boolean userDidLike) {
-    String userId = memorialApplication.getUserId();
-    Long characterId = memorialApplication.getCharacterId();
-    String content = memorialApplication.getContent();
-    LocalDate createdAt = memorialApplication.getCreatedAt();
-    MemorialApplicationState state = memorialApplication.getState();
-    Long likes = memorialApplication.getLikes();
-
-    return new MemorialApplicationResponse(userId, characterId, content, createdAt, state, likes, userDidLike);
-  }
-
-  public List<MemorialApplicationListResponse> toMemorialApplicationPageListResponse(Slice<MemorialApplication> memorialApplicationSlice) {
+  public List<MemorialApplicationResponse> toMemorialApplicationPageListResponse(Slice<MemorialApplication> memorialApplicationSlice, String viewerId) {
     return memorialApplicationSlice.getContent()
             .stream()
-            .map(this::toMemorialApplicationListResponse)
+            .map(memorialApplication -> toMemorialApplicationResponse(memorialApplication, viewerId))
             .toList();
   }
 
@@ -72,14 +47,14 @@ public class MemorialApplicationMapper {
             .build();
   }
 
-  public List<MemorialApplicationListResponse> toMemorialApplicationResponse(Slice<MemorialApplication> memorialApplicationSlice) {
+  public List<MemorialApplicationResponse> toMemorialApplicationListResponse(Slice<MemorialApplication> memorialApplicationSlice, String viewerId) {
     return memorialApplicationSlice.getContent()
             .stream()
-            .map(this::toMemorialApplicationResponse)
+            .map(memorialApplication -> toMemorialApplicationResponse(memorialApplication, viewerId))
             .toList();
   }
 
-  private MemorialApplicationListResponse toMemorialApplicationResponse(MemorialApplication memorialApplication) {
+  public MemorialApplicationResponse toMemorialApplicationResponse(MemorialApplication memorialApplication, String viewerId) {
     String userId = memorialApplication.getUserId();
     Long characterId = memorialApplication.getCharacterId();
     String content = memorialApplication.getContent();
@@ -87,7 +62,8 @@ public class MemorialApplicationMapper {
     MemorialApplicationState state = memorialApplication.getState();
     Long likes = memorialApplication.getLikes();
     Long memorialApplicationId = memorialApplication.getMemorialApplicationId();
+    boolean didUserLiked = viewerId != null && memorialApplication.didUserLiked(viewerId);
 
-    return new MemorialApplicationListResponse(userId, characterId, memorialApplicationId, content, createdAt, state, likes);
+    return new MemorialApplicationResponse(userId, characterId, memorialApplicationId, content, createdAt, state, likes, didUserLiked);
   }
 }
