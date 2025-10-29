@@ -4,12 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -30,6 +33,10 @@ public class MemorialApplication {
   private LocalDateTime createdAt;
   @Enumerated(EnumType.STRING)
   private MemorialApplicationState state;
+
+  @OneToMany(mappedBy = "memorialApplication", orphanRemoval = true, cascade = CascadeType.ALL)
+  @Fetch(FetchMode.SUBSELECT)
+  private List<MemorialApplicationLikes> memorialApplicationLikes;
 
   @PrePersist
   public void init() {
