@@ -54,6 +54,11 @@ public class MemorialApplication {
     this.state  = MemorialApplicationState.PENDING;
   }
 
+  public boolean didUserLiked(String viewerId) {
+    return this.memorialApplicationLikes.stream()
+            .anyMatch(like -> like.didUserLiked(viewerId));
+  }
+
 
   public void countLikes(Long likes) {
     this.likes = likes;

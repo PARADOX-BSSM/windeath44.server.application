@@ -15,6 +15,7 @@ public record MemorialApplicationListResponse (
         String content,
         LocalDate createdAt,
         MemorialApplicationState state,
-        Long likes
+        Long likes,
+        boolean didUserLiked
 ) {
 }

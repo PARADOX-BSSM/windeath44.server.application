@@ -20,4 +20,8 @@ public class MemorialApplicationLikes {
   @JoinColumn(name = "memorial_application_id")
   private MemorialApplication memorialApplication;
 
+  public boolean didUserLiked(String viewerId) {
+    return this.id.getUserId().equals(viewerId);
+  }
+
 }

@@ -27,33 +27,23 @@ public class MemorialApplicationMapper {
 
   }
 
-  public MemorialApplicationListResponse toMemorialApplicationListResponse(MemorialApplication memorialApplication) {
-    Long memorialApplicationId = memorialApplication.getMemorialApplicationId();
+  public MemorialApplicationResponse toMemorialApplicationResponse(MemorialApplication memorialApplication, String viewerId) {
     String userId = memorialApplication.getUserId();
     Long characterId = memorialApplication.getCharacterId();
     String content = memorialApplication.getContent();
     LocalDate createdAt = memorialApplication.getCreatedAt();
     MemorialApplicationState state = memorialApplication.getState();
     Long likes = memorialApplication.getLikes();
+    
+    boolean didUserLiked = viewerId != null && memorialApplication.didUserLiked(viewerId);
 
-    return new MemorialApplicationListResponse(userId, characterId, memorialApplicationId, content, createdAt, state, likes);
+    return new MemorialApplicationResponse(userId, characterId, content, createdAt, state, likes, didUserLiked);
   }
 
-  public MemorialApplicationResponse toMemorialApplicationResponse(MemorialApplication memorialApplication, boolean userDidLike) {
-    String userId = memorialApplication.getUserId();
-    Long characterId = memorialApplication.getCharacterId();
-    String content = memorialApplication.getContent();
-    LocalDate createdAt = memorialApplication.getCreatedAt();
-    MemorialApplicationState state = memorialApplication.getState();
-    Long likes = memorialApplication.getLikes();
-
-    return new MemorialApplicationResponse(userId, characterId, content, createdAt, state, likes, userDidLike);
-  }
-
-  public List<MemorialApplicationListResponse> toMemorialApplicationPageListResponse(Slice<MemorialApplication> memorialApplicationSlice) {
+  public List<MemorialApplicationListResponse> toMemorialApplicationPageListResponse(Slice<MemorialApplication> memorialApplicationSlice, String viewerId) {
     return memorialApplicationSlice.getContent()
             .stream()
-            .map(this::toMemorialApplicationListResponse)
+            .map(memorialApplication -> toMemorialApplicationListResponse(memorialApplication, viewerId))
             .toList();
   }
 
@@ -72,14 +62,14 @@ public class MemorialApplicationMapper {
             .build();
   }
 
-  public List<MemorialApplicationListResponse> toMemorialApplicationResponse(Slice<MemorialApplication> memorialApplicationSlice) {
+  public List<MemorialApplicationListResponse> toMemorialApplicationResponse(Slice<MemorialApplication> memorialApplicationSlice, String viewerId) {
     return memorialApplicationSlice.getContent()
             .stream()
-            .map(this::toMemorialApplicationResponse)
+            .map(memorialApplication -> toMemorialApplicationListResponse(memorialApplication, viewerId))
             .toList();
   }
 
-  private MemorialApplicationListResponse toMemorialApplicationResponse(MemorialApplication memorialApplication) {
+  private MemorialApplicationListResponse toMemorialApplicationListResponse(MemorialApplication memorialApplication, String viewerId) {
     String userId = memorialApplication.getUserId();
     Long characterId = memorialApplication.getCharacterId();
     String content = memorialApplication.getContent();
@@ -87,7 +77,8 @@ public class MemorialApplicationMapper {
     MemorialApplicationState state = memorialApplication.getState();
     Long likes = memorialApplication.getLikes();
     Long memorialApplicationId = memorialApplication.getMemorialApplicationId();
+    boolean didUserLiked = viewerId != null && memorialApplication.didUserLiked(viewerId);
 
-    return new MemorialApplicationListResponse(userId, characterId, memorialApplicationId, content, createdAt, state, likes);
+    return new MemorialApplicationListResponse(userId, characterId, memorialApplicationId, content, createdAt, state, likes, didUserLiked);
   }
 }

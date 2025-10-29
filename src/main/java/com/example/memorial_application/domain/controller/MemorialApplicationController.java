@@ -45,28 +45,44 @@ public class MemorialApplicationController {
   }
 
   @GetMapping("/my")
-  public ResponseEntity<ResponseDto<CursorPage<MemorialApplicationListResponse>>> findByUserId(@RequestHeader("user-id") String userId, @RequestParam(value = "cursorId", required = false) Long cursorId, @RequestParam("size") int size) {
+  public ResponseEntity<ResponseDto<CursorPage<MemorialApplicationListResponse>>> findByUserId(
+          @RequestHeader("user-id") String userId,
+          @RequestParam(value = "cursorId", required = false) Long cursorId,
+          @RequestParam("size") int size
+  ) {
     CursorPage<MemorialApplicationListResponse> memorialApplicationResponse = memorialApplicationQueryService.findMyApplicationByCursor(userId, cursorId, size);
     ResponseDto<CursorPage<MemorialApplicationListResponse>> responseDto = HttpUtil.success("find my memorial application", memorialApplicationResponse);
     return ResponseEntity.ok(responseDto);
   }
 
   @GetMapping
-  public ResponseEntity<ResponseDto<CursorPage<MemorialApplicationListResponse>>> findByCursor(@RequestParam(value = "cursorId", required = false) Long cursorId, @RequestParam("size") int size, @RequestParam(value="memorizingCode", required = false) Integer memorizingCode) {
-    CursorPage<MemorialApplicationListResponse> memorialApplicationResponse = memorialApplicationQueryService.findByCursor(cursorId, size, memorizingCode);
+  public ResponseEntity<ResponseDto<CursorPage<MemorialApplicationListResponse>>> findByCursor(
+          @RequestHeader("user-id") String userId,
+          @RequestParam(value = "cursorId", required = false) Long cursorId,
+          @RequestParam("size") int size,
+          @RequestParam(value="memorizingCode", required = false) Integer memorizingCode
+  ) {
+    CursorPage<MemorialApplicationListResponse> memorialApplicationResponse = memorialApplicationQueryService.findByCursor(cursorId, size, memorizingCode, userId);
     ResponseDto<CursorPage<MemorialApplicationListResponse>> responseDto = HttpUtil.success("find memorials application with cursor", memorialApplicationResponse);
     return ResponseEntity.ok(responseDto);
   }
 
   @GetMapping("/search")
-  public ResponseEntity<ResponseDto<CursorPage<MemorialApplicationListResponse>>> findByCharacterId(@RequestParam("characterId") Long characterId, @RequestParam(value = "cursorId", required = false) Long cursorId, @RequestParam("size") int size) {
-    CursorPage<MemorialApplicationListResponse> memorialApplicationResponse = memorialApplicationQueryService.findByCharacterId(characterId, cursorId, size);
+  public ResponseEntity<ResponseDto<CursorPage<MemorialApplicationListResponse>>> findByCharacterId(
+          @RequestHeader("user-id") String userId,
+          @RequestParam("characterId") Long characterId,
+          @RequestParam(value = "cursorId", required = false) Long cursorId,
+          @RequestParam("size") int size
+  ) {
+    CursorPage<MemorialApplicationListResponse> memorialApplicationResponse = memorialApplicationQueryService.findByCharacterId(characterId, cursorId, size, userId);
     ResponseDto<CursorPage<MemorialApplicationListResponse>> responseDto = HttpUtil.success("find memorial application with characterId", memorialApplicationResponse);
     return ResponseEntity.ok(responseDto);
   }
 
   @GetMapping("/{memorial-application-id}")
-  public ResponseEntity<ResponseDto<MemorialApplicationResponse>> findById(@RequestHeader(value = "user-id", required = false) String userId, @PathVariable("memorial-application-id") Long memorialApplicationId) {
+  public ResponseEntity<ResponseDto<MemorialApplicationResponse>> findById
+          (@RequestHeader(value = "user-id", required = false) String userId,
+           @PathVariable("memorial-application-id") Long memorialApplicationId) {
     MemorialApplicationResponse memorialApplicationResponse = memorialApplicationQueryService.findById(memorialApplicationId, userId);
     ResponseDto<MemorialApplicationResponse> responseDto = HttpUtil.success("find memorial application", memorialApplicationResponse);
     return ResponseEntity.ok(responseDto);
