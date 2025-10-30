@@ -38,11 +38,16 @@ public class MemorialApplication {
   @Fetch(FetchMode.SUBSELECT)
   private List<MemorialApplicationLikes> memorialApplicationLikes;
 
+  @OneToOne(mappedBy = "memorialApplication", cascade = CascadeType.ALL)
+  @Fetch(FetchMode.JOIN)
+  private RejectedReason rejectedReason;
+
   @PrePersist
   public void init() {
     this.likes = 0L;
   }
-  public void reject() {
+  public void reject(RejectedReason rejectedReason) {
+    this.rejectedReason = rejectedReason;
     this.state = MemorialApplicationState.REJECTED;
   }
 
@@ -81,6 +86,10 @@ public class MemorialApplication {
     Month month = this.createdAt.getMonth();
     int day = this.createdAt.getDayOfMonth();
     return LocalDate.of(year, month, day);
+  }
+
+  public String getReason() {
+    return this.rejectedReason.getReason();
   }
 }
 

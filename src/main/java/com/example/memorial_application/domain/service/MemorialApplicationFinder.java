@@ -13,7 +13,7 @@ public class MemorialApplicationFinder {
 
 
   public MemorialApplication findMemorialApplicationById(Long memorialApplicationId) {
-    return memorialApplicationRepository.findById(memorialApplicationId)
+    return memorialApplicationRepository.findByIdWithFetch(memorialApplicationId)
             .orElseThrow(NotFoundMemorialApplicationException::getInstance);
   }
 

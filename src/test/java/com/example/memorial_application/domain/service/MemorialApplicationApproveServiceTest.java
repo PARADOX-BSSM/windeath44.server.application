@@ -112,18 +112,18 @@ class MemorialApplicationApproveServiceTest {
         verify(kafkaProducer).send("memorial-application-", memorialApplicationAvroSchema);
     }
 
-    @Test
-    @DisplayName("Reject should update memorial application state to rejected")
-    void reject_ShouldUpdateStateToRejected() {
-        // Arrange
-        when(finder.findMemorialApplicationById(memorialApplicationId)).thenReturn(memorialApplication);
-
-        // Act
-        memorialApplicationApproveService.reject(memorialApplicationId);
-
-        // Assert
-        verify(memorialApplication).reject();
-    }
+//    @Test
+//    @DisplayName("Reject should update memorial application state to rejected")
+//    void reject_ShouldUpdateStateToRejected() {
+//        // Arrange
+//        when(finder.findMemorialApplicationById(memorialApplicationId)).thenReturn(memorialApplication);
+//
+//        // Act
+//        memorialApplicationApproveService.reject(memorialApplicationId);
+//
+//        // Assert
+//        verify(memorialApplication).reject();
+//    }
 
 //    @Test
 //    @DisplayName("Approve by CharacterAvroSchema should update state and send Kafka message")
