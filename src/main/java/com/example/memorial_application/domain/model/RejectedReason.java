@@ -26,7 +26,7 @@ public class RejectedReason {
     public static RejectedReason of(MemorialApplication memorialApplication, RejectedReasonRequest reason) {
         return RejectedReason.builder()
                 .memorialApplication(memorialApplication)
-                .reason(reason.rejectedRequest())
+                .reason(reason.rejectReason())
                 .build();
     }
 }
