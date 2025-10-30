@@ -1,6 +1,8 @@
 package com.example.memorial_application.domain.controller;
 import com.example.memorial_application.domain.dto.request.MemorialApplicationUpadateRequest;
 import com.example.memorial_application.domain.dto.request.MemorialApplicationRequest;
+import com.example.memorial_application.domain.dto.request.RejectedReasonRequest;
+import com.example.memorial_application.domain.model.RejectedReason;
 import com.example.memorial_application.global.dto.CursorPage;
 import com.example.memorial_application.global.dto.ResponseDto;
 import com.example.memorial_application.domain.service.MemorialApplicationCommandService;
@@ -79,9 +81,10 @@ public class MemorialApplicationController {
   }
 
   @GetMapping("/{memorial-application-id}")
-  public ResponseEntity<ResponseDto<MemorialApplicationResponse>> findById
-          (@RequestHeader(value = "user-id", required = false) String userId,
-           @PathVariable("memorial-application-id") Long memorialApplicationId) {
+  public ResponseEntity<ResponseDto<MemorialApplicationResponse>> findById(
+          @RequestHeader(value = "user-id", required = false) String userId,
+          @PathVariable("memorial-application-id") Long memorialApplicationId
+  ) {
     MemorialApplicationResponse memorialApplicationResponse = memorialApplicationQueryService.findById(memorialApplicationId, userId);
     ResponseDto<MemorialApplicationResponse> responseDto = HttpUtil.success("find memorial application", memorialApplicationResponse);
     return ResponseEntity.ok(responseDto);
@@ -97,8 +100,11 @@ public class MemorialApplicationController {
   }
 
   @PatchMapping("/cancel/{memorial-application-id}")
-  public ResponseEntity<ResponseDto<Void>> cancel(@PathVariable("memorial-application-id") Long memorialApplicationId) {
-    memorialApplicationCommandService.reject(memorialApplicationId);
+  public ResponseEntity<ResponseDto<Void>> cancel(
+          @PathVariable("memorial-application-id") Long memorialApplicationId,
+          @Valid @RequestBody RejectedReasonRequest rejectedReason
+  ) {
+    memorialApplicationCommandService.reject(memorialApplicationId, rejectedReason);
     ResponseDto<Void> responseDto = HttpUtil.success("cancel memorial application");
     return ResponseEntity
             .status(HttpStatus.ACCEPTED)

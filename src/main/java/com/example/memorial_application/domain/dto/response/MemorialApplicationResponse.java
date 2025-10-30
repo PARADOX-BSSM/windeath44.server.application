@@ -1,6 +1,7 @@
 package com.example.memorial_application.domain.dto.response;
 
 import com.example.memorial_application.domain.model.MemorialApplicationState;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.time.LocalDate;
 
@@ -15,6 +16,8 @@ public record MemorialApplicationResponse(
         LocalDate createdAt,
         MemorialApplicationState state,
         Long likes,
-        boolean didUserLiked
+        boolean didUserLiked,
+        @JsonInclude(JsonInclude.Include.NON_NULL)
+        String rejectedReason
 ) {
 }

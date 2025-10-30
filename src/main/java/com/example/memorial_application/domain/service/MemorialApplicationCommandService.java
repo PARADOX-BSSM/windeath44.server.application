@@ -2,11 +2,14 @@ package com.example.memorial_application.domain.service;
 
 import com.example.memorial_application.domain.dto.request.MemorialApplicationRequest;
 import com.example.memorial_application.domain.dto.request.MemorialApplicationUpadateRequest;
+import com.example.memorial_application.domain.dto.request.RejectedReasonRequest;
 import com.example.memorial_application.domain.exception.AlreadyMemorialApplicationException;
 import com.example.memorial_application.domain.exception.NotFoundMemorialApplicationException;
 import com.example.memorial_application.domain.model.MemorialApplication;
 import com.example.memorial_application.domain.mapper.MemorialApplicationMapper;
+import com.example.memorial_application.domain.model.RejectedReason;
 import com.example.memorial_application.domain.repository.MemorialApplicationRepository;
+import com.example.memorial_application.domain.repository.RejectedReasonRepository;
 import com.example.memorial_application.domain.service.gRPC.GrpcClientService;
 import com.example.memorial_application.global.producer.KafkaProducer;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +22,7 @@ import windeath44.server.memorial.avro.MemorialAvroSchema;
 @RequiredArgsConstructor
 public class MemorialApplicationCommandService {
   private final MemorialApplicationRepository memorialApplicationRepository;
+  private final RejectedReasonRepository rejectedReasonRepository;
   private final MemorialApplicationMapper memorialApplicationMapper;
   private final MemorialApplicationFinder finder;
 
@@ -59,9 +63,11 @@ public class MemorialApplicationCommandService {
   }
 
   @Transactional
-  public void reject(Long memorialApplicationId) {
+  public void reject(Long memorialApplicationId, RejectedReasonRequest reason) {
     MemorialApplication memorialApplication = finder.findMemorialApplicationById(memorialApplicationId);
-    memorialApplication.reject();
+    RejectedReason rejectedReason = RejectedReason.of(memorialApplication, reason);
+    rejectedReasonRepository.save(rejectedReason);
+    memorialApplication.reject(rejectedReason);
   }
 
   @Transactional

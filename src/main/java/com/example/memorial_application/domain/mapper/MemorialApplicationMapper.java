@@ -63,7 +63,10 @@ public class MemorialApplicationMapper {
     Long likes = memorialApplication.getLikes();
     Long memorialApplicationId = memorialApplication.getMemorialApplicationId();
     boolean didUserLiked = viewerId != null && memorialApplication.didUserLiked(viewerId);
+    String rejectedReason = (state == MemorialApplicationState.REJECTED && memorialApplication.getRejectedReason() != null)
+        ? memorialApplication.getReason()
+        : null;
 
-    return new MemorialApplicationResponse(userId, characterId, memorialApplicationId, content, createdAt, state, likes, didUserLiked);
+    return new MemorialApplicationResponse(userId, characterId, memorialApplicationId, content, createdAt, state, likes, didUserLiked, rejectedReason);
   }
 }
