@@ -2,8 +2,8 @@ package com.example.memorial_application.domain.controller;
 import com.example.memorial_application.domain.dto.request.MemorialApplicationUpadateRequest;
 import com.example.memorial_application.domain.dto.request.MemorialApplicationRequest;
 import com.example.memorial_application.domain.dto.request.RejectedReasonRequest;
-import com.example.memorial_application.domain.model.RejectedReason;
 import com.example.memorial_application.global.dto.CursorPage;
+import com.example.memorial_application.global.dto.OffsetPage;
 import com.example.memorial_application.global.dto.ResponseDto;
 import com.example.memorial_application.domain.service.MemorialApplicationCommandService;
 import com.example.memorial_application.domain.service.MemorialApplicationQueryService;
@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.memorial_application.domain.dto.response.MemorialApplicationResponse;
+import com.example.memorial_application.domain.model.OrderBy;
 
 @RestController
 @RequiredArgsConstructor
@@ -49,10 +50,27 @@ public class MemorialApplicationController {
   public ResponseEntity<ResponseDto<CursorPage<MemorialApplicationResponse>>> findByUserId(
           @RequestHeader(value = "user-id", required = false) String userId,
           @RequestParam(value = "cursorId", required = false) Long cursorId,
-          @RequestParam("size") int size
+          @RequestParam("size") int size,
+          @RequestParam(value = "orderBy", required = false, defaultValue = "recent") String orderBy
   ) {
-    CursorPage<MemorialApplicationResponse> memorialApplicationResponse = memorialApplicationQueryService.findMyApplicationByCursor(userId, cursorId, size);
+    CursorPage<MemorialApplicationResponse> memorialApplicationResponse = memorialApplicationQueryService.findMyApplicationByCursor(userId, cursorId, size, orderBy);
     ResponseDto<CursorPage<MemorialApplicationResponse>> responseDto = HttpUtil.success("find my memorial application", memorialApplicationResponse);
+    return ResponseEntity.ok(responseDto);
+  }
+
+  @GetMapping("/offset")
+  public ResponseEntity<ResponseDto<OffsetPage<MemorialApplicationResponse>>> findByOffset(
+          @RequestHeader(value = "user-id", required = false) String userId,
+          @RequestParam(value = "page", defaultValue = "0") int page,
+          @RequestParam(value = "size", defaultValue = "10") int size,
+          @RequestParam(value = "memorizingCode", required = false) Integer memorizingCode,
+          @RequestParam(value = "orderBy", required = false, defaultValue = "recent") String orderByParam
+  ) {
+    OrderBy orderBy = OrderBy.fromString(orderByParam);
+    OffsetPage<MemorialApplicationResponse> memorialApplicationResponse =
+            memorialApplicationQueryService.findByOffsetPagination(page, size, memorizingCode, userId, orderBy);
+    ResponseDto<OffsetPage<MemorialApplicationResponse>> responseDto =
+            HttpUtil.success("find memorials application with offset pagination", memorialApplicationResponse);
     return ResponseEntity.ok(responseDto);
   }
 
@@ -61,9 +79,11 @@ public class MemorialApplicationController {
           @RequestHeader(value = "user-id", required = false) String userId,
           @RequestParam(value = "cursorId", required = false) Long cursorId,
           @RequestParam("size") int size,
-          @RequestParam(value="memorizingCode", required = false) Integer memorizingCode
+          @RequestParam(value="memorizingCode", required = false) Integer memorizingCode,
+          @RequestParam(value = "orderBy", required = false, defaultValue = "recent") String orderByParam
   ) {
-    CursorPage<MemorialApplicationResponse> memorialApplicationResponse = memorialApplicationQueryService.findByCursor(cursorId, size, memorizingCode, userId);
+    OrderBy orderBy = OrderBy.fromString(orderByParam);
+    CursorPage<MemorialApplicationResponse> memorialApplicationResponse = memorialApplicationQueryService.findByCursor(cursorId, size, memorizingCode, userId, orderBy);
     ResponseDto<CursorPage<MemorialApplicationResponse>> responseDto = HttpUtil.success("find memorials application with cursor", memorialApplicationResponse);
     return ResponseEntity.ok(responseDto);
   }
@@ -73,9 +93,11 @@ public class MemorialApplicationController {
           @RequestHeader(value = "user-id", required = false) String userId,
           @RequestParam("characterId") Long characterId,
           @RequestParam(value = "cursorId", required = false) Long cursorId,
-          @RequestParam("size") int size
+          @RequestParam("size") int size,
+          @RequestParam(value = "orderBy", required = false, defaultValue = "recent") String orderByParam
   ) {
-    CursorPage<MemorialApplicationResponse> memorialApplicationResponse = memorialApplicationQueryService.findByCharacterId(characterId, cursorId, size, userId);
+    OrderBy orderBy = OrderBy.fromString(orderByParam);
+    CursorPage<MemorialApplicationResponse> memorialApplicationResponse = memorialApplicationQueryService.findByCharacterId(characterId, cursorId, size, userId, orderBy);
     ResponseDto<CursorPage<MemorialApplicationResponse>> responseDto = HttpUtil.success("find memorial application with characterId", memorialApplicationResponse);
     return ResponseEntity.ok(responseDto);
   }
