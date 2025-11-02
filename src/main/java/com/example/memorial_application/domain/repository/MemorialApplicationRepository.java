@@ -2,6 +2,7 @@ package com.example.memorial_application.domain.repository;
 
 import com.example.memorial_application.domain.model.MemorialApplication;
 import com.example.memorial_application.domain.model.MemorialApplicationState;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -26,57 +27,10 @@ public interface MemorialApplicationRepository extends JpaRepository<MemorialApp
   @Query(value = "update MemorialApplication m set m.state = 'REJECTED' where m.characterId = :characterId and m.memorialApplicationId != :memorialApplicationId")
   void updateStateToRejectedByCharacterId(@Param("memorialApplicationId") Long memorialApplicationId, @Param("characterId") Long characterId);
 
-  @Query(value = "select m from MemorialApplication m " +
-         "left join fetch m.rejectedReason " +
-         "where m.state = :state and m.memorialApplicationId > :cursorId " +
-         "order by m.memorialApplicationId asc")
-  Slice<MemorialApplication> findPageableByCursorAndMemorizing(@Param("cursorId") Long cursorId, Pageable pageable, MemorialApplicationState state);
-
-  @Query(value = "select m from MemorialApplication m " +
-         "left join fetch m.rejectedReason " +
-         "where m.state = :state " +
-         "order by m.memorialApplicationId asc")
-  Slice<MemorialApplication> findPageableByMemorizing(Pageable pageable, MemorialApplicationState state);
-
-  @Query(value = "select m from MemorialApplication m " +
-         "left join fetch m.rejectedReason " +
-         "where m.memorialApplicationId > :cursorId " +
-         "order by m.memorialApplicationId asc")
-  Slice<MemorialApplication> findPageableByCursor(@Param("cursorId") Long cursorId, Pageable pageable);
-
-  @Query(value = "select m from MemorialApplication m " +
-         "left join fetch m.rejectedReason " +
-         "order by m.memorialApplicationId asc")
-  Slice<MemorialApplication> findPageable(Pageable pageable);
-
 
   Optional<MemorialApplication> findByUserIdAndCharacterId(String applicantId, Long characterId);
 
   Boolean existsByUserIdAndCharacterId(String userId, Long characterId);
-
-  @Query("select m from MemorialApplication m " +
-         "left join fetch m.rejectedReason " +
-         "where m.userId = :userId " +
-         "order by m.memorialApplicationId desc")
-  Slice<MemorialApplication> findMyApplicationPageable(@Param("userId") String userId, Pageable pageable);
-
-  @Query("select m from MemorialApplication m " +
-         "left join fetch m.rejectedReason " +
-         "where m.userId = :userId and m.memorialApplicationId < :cursorId " +
-         "order by m.memorialApplicationId desc")
-  Slice<MemorialApplication> findMyApplicationPageableByCursorId(@Param("userId") String userId, @Param("cursorId") Long cursorId, Pageable pageable);
-
-  @Query(value = "select m from MemorialApplication m " +
-         "left join fetch m.rejectedReason " +
-         "where m.characterId = :characterId " +
-         "order by m.memorialApplicationId desc")
-  Slice<MemorialApplication> findByCharacterId(Long characterId, Pageable pageable);
-
-  @Query(value = "select m from MemorialApplication m " +
-         "left join fetch m.rejectedReason " +
-         "where m.characterId = :characterId and m.memorialApplicationId <= :cursorId " +
-         "order by m.memorialApplicationId desc")
-  Slice<MemorialApplication> findByCharacterIdAndCursorId(Long characterId, Pageable pageable, Long cursorId);
 
   // ===== 전체 조회 - 정렬별 =====
   // RECENT (최근순 - desc)
@@ -240,40 +194,40 @@ public interface MemorialApplicationRepository extends JpaRepository<MemorialApp
   @Query(value = "select m from MemorialApplication m " +
          "left join fetch m.rejectedReason " +
          "order by m.memorialApplicationId desc")
-  org.springframework.data.domain.Page<MemorialApplication> findAllWithOffsetRecent(Pageable pageable);
+  Page<MemorialApplication> findAllWithOffsetRecent(Pageable pageable);
 
   // 전체 조회 - OLD
   @Query(value = "select m from MemorialApplication m " +
          "left join fetch m.rejectedReason " +
          "order by m.memorialApplicationId asc")
-  org.springframework.data.domain.Page<MemorialApplication> findAllWithOffsetOld(Pageable pageable);
+  Page<MemorialApplication> findAllWithOffsetOld(Pageable pageable);
 
   // 전체 조회 - POPULAR
   @Query(value = "select m from MemorialApplication m " +
          "left join fetch m.rejectedReason " +
          "order by m.likes desc, m.memorialApplicationId desc")
-  org.springframework.data.domain.Page<MemorialApplication> findAllWithOffsetPopular(Pageable pageable);
+  Page<MemorialApplication> findAllWithOffsetPopular(Pageable pageable);
 
   // 상태별 조회 - RECENT
   @Query(value = "select m from MemorialApplication m " +
          "left join fetch m.rejectedReason " +
          "where m.state = :state " +
          "order by m.memorialApplicationId desc")
-  org.springframework.data.domain.Page<MemorialApplication> findByStateWithOffsetRecent(@Param("state") MemorialApplicationState state, Pageable pageable);
+  Page<MemorialApplication> findByStateWithOffsetRecent(@Param("state") MemorialApplicationState state, Pageable pageable);
 
   // 상태별 조회 - OLD
   @Query(value = "select m from MemorialApplication m " +
          "left join fetch m.rejectedReason " +
          "where m.state = :state " +
          "order by m.memorialApplicationId asc")
-  org.springframework.data.domain.Page<MemorialApplication> findByStateWithOffsetOld(@Param("state") MemorialApplicationState state, Pageable pageable);
+  Page<MemorialApplication> findByStateWithOffsetOld(@Param("state") MemorialApplicationState state, Pageable pageable);
 
   // 상태별 조회 - POPULAR
   @Query(value = "select m from MemorialApplication m " +
          "left join fetch m.rejectedReason " +
          "where m.state = :state " +
          "order by m.likes desc, m.memorialApplicationId desc")
-  org.springframework.data.domain.Page<MemorialApplication> findByStateWithOffsetPopular(@Param("state") MemorialApplicationState state, Pageable pageable);
+  Page<MemorialApplication> findByStateWithOffsetPopular(@Param("state") MemorialApplicationState state, Pageable pageable);
 
 }
 

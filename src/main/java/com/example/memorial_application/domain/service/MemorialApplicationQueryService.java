@@ -152,7 +152,7 @@ public class MemorialApplicationQueryService  {
             userId
     );
     
-    return new OffsetPage<>(
+    return OffsetPage.of(
             content,
             (int) memorialApplicationPage.getTotalElements()
     );
