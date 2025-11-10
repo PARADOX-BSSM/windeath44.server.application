@@ -37,10 +37,10 @@ kafka:
       auto.register.schemas: true
       value.subject.name.strategy: io.confluent.kafka.serializers.subject.TopicNameStrategy
     consumer:
-    auto-offset-reset: earliest
-    key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-    value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
-    specific-avro-reader: true
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      specific-avro-reader: true
 logging:
   level:
     com.example.memorial_application: trace
