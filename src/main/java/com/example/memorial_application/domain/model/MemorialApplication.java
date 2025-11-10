@@ -27,6 +27,7 @@ public class MemorialApplication {
 
   private String userId;
   private Long characterId;
+  @Column(columnDefinition = "TEXT")
   private String content;
   private Long likes;
   @CreatedDate

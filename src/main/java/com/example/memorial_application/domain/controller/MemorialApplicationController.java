@@ -2,8 +2,8 @@ package com.example.memorial_application.domain.controller;
 import com.example.memorial_application.domain.dto.request.MemorialApplicationUpadateRequest;
 import com.example.memorial_application.domain.dto.request.MemorialApplicationRequest;
 import com.example.memorial_application.domain.dto.request.RejectedReasonRequest;
-import com.example.memorial_application.domain.model.RejectedReason;
 import com.example.memorial_application.global.dto.CursorPage;
+import com.example.memorial_application.global.dto.OffsetPage;
 import com.example.memorial_application.global.dto.ResponseDto;
 import com.example.memorial_application.domain.service.MemorialApplicationCommandService;
 import com.example.memorial_application.domain.service.MemorialApplicationQueryService;
@@ -55,6 +55,22 @@ public class MemorialApplicationController {
   ) {
     CursorPage<MemorialApplicationResponse> memorialApplicationResponse = memorialApplicationQueryService.findMyApplicationByCursor(userId, cursorId, size, orderBy);
     ResponseDto<CursorPage<MemorialApplicationResponse>> responseDto = HttpUtil.success("find my memorial application", memorialApplicationResponse);
+    return ResponseEntity.ok(responseDto);
+  }
+
+  @GetMapping("/offset")
+  public ResponseEntity<ResponseDto<OffsetPage<MemorialApplicationResponse>>> findByOffset(
+          @RequestHeader(value = "user-id", required = false) String userId,
+          @RequestParam(value = "page", defaultValue = "0") int page,
+          @RequestParam(value = "size", defaultValue = "10") int size,
+          @RequestParam(value = "memorizingCode", required = false) Integer memorizingCode,
+          @RequestParam(value = "orderBy", required = false, defaultValue = "recent") String orderByParam
+  ) {
+    OrderBy orderBy = OrderBy.fromString(orderByParam);
+    OffsetPage<MemorialApplicationResponse> memorialApplicationResponse =
+            memorialApplicationQueryService.findByOffsetPagination(page, size, memorizingCode, userId, orderBy);
+    ResponseDto<OffsetPage<MemorialApplicationResponse>> responseDto =
+            HttpUtil.success("find memorials application with offset pagination", memorialApplicationResponse);
     return ResponseEntity.ok(responseDto);
   }
 

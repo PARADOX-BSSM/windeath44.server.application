@@ -9,8 +9,10 @@ import com.example.memorial_application.domain.repository.MemorialApplicationLik
 import com.example.memorial_application.domain.repository.MemorialApplicationRepository;
 import com.example.memorial_application.domain.dto.response.MemorialApplicationResponse;
 import com.example.memorial_application.global.dto.CursorPage;
+import com.example.memorial_application.global.dto.OffsetPage;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.query.Order;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -116,4 +118,44 @@ public class MemorialApplicationQueryService  {
 
     return new CursorPage<>(memorialApplicationsList, memorialApplicationSlice.hasNext());
   }
+
+  public OffsetPage<MemorialApplicationResponse> findByOffsetPagination(
+          int page,
+          int size,
+          Integer memorizingCode,
+          String userId,
+          OrderBy orderBy
+  ) {
+    Pageable pageable = PageRequest.of(page, size);
+    MemorialApplicationState memorialzing = MemorialApplicationState.isMemorializing(memorizingCode);
+
+    Page<MemorialApplication> memorialApplicationPage;
+
+    if (memorialzing == null) {
+      // 상태 필터 없음
+      memorialApplicationPage = switch (orderBy) {
+        case RECENT -> memorialApplicationRepository.findAllWithOffsetRecent(pageable);
+        case OLD -> memorialApplicationRepository.findAllWithOffsetOld(pageable);
+        case POPULAR -> memorialApplicationRepository.findAllWithOffsetPopular(pageable);
+      };
+    } else {
+      // 상태 필터 있음
+      memorialApplicationPage = switch (orderBy) {
+        case RECENT -> memorialApplicationRepository.findByStateWithOffsetRecent(memorialzing, pageable);
+        case OLD -> memorialApplicationRepository.findByStateWithOffsetOld(memorialzing, pageable);
+        case POPULAR -> memorialApplicationRepository.findByStateWithOffsetPopular(memorialzing, pageable);
+      };
+    }
+
+    List<MemorialApplicationResponse> content = memorialApplicationMapper.toMemorialApplicationListResponse(
+            memorialApplicationPage.getContent(),
+            userId
+    );
+    
+    return OffsetPage.of(
+            content,
+            (int) memorialApplicationPage.getTotalElements()
+    );
+  }
+
 }

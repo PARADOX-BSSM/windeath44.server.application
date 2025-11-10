@@ -54,6 +54,13 @@ public class MemorialApplicationMapper {
             .toList();
   }
 
+  public List<MemorialApplicationResponse> toMemorialApplicationListResponse(List<MemorialApplication> memorialApplicationList, String viewerId) {
+    return memorialApplicationList
+            .stream()
+            .map(memorialApplication -> toMemorialApplicationResponse(memorialApplication, viewerId))
+            .toList();
+  }
+
   public MemorialApplicationResponse toMemorialApplicationResponse(MemorialApplication memorialApplication, String viewerId) {
     String userId = memorialApplication.getUserId();
     Long characterId = memorialApplication.getCharacterId();
