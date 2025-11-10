@@ -1,0 +1,20 @@
+package com.example.memorial_application.domain.service;
+
+import com.example.memorial_application.domain.model.MemorialApplication;
+import com.example.memorial_application.domain.repository.MemorialApplicationRepository;
+import com.example.memorial_application.domain.exception.NotFoundMemorialApplicationException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+
+@Component
+@RequiredArgsConstructor
+public class MemorialApplicationFinder {
+  private final MemorialApplicationRepository memorialApplicationRepository;
+
+
+  public MemorialApplication findMemorialApplicationById(Long memorialApplicationId) {
+    return memorialApplicationRepository.findByIdWithFetch(memorialApplicationId)
+            .orElseThrow(NotFoundMemorialApplicationException::getInstance);
+  }
+
+}

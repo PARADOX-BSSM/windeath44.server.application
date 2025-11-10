@@ -8,7 +8,8 @@ public record ErrorResponse (
 ) {
   public ErrorResponse(ErrorCode errorCode){
     this(
-            errorCode.getStatus(), errorCode.getMessage()
+            errorCode.getStatus(),
+            errorCode.getMessage()
     );
   }
 }
