@@ -15,6 +15,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import windeath44.server.application.avro.MemorialAppliedAvroSchema;
 import windeath44.server.application.avro.MemorialApplicationAvroSchema;
 import windeath44.server.memorial.avro.MemorialAvroSchema;
 
@@ -51,6 +52,7 @@ class MemorialApplicationApproveServiceTest {
     private Long memorialApplicationId;
     private MemorialApplication memorialApplication;
     private MemorialApplicationAvroSchema memorialApplicationAvroSchema;
+    private MemorialAppliedAvroSchema memorialAppliedAvroSchema;
     private MemorialAvroSchema memorialAvroSchema;
     private MemorialApplicationRequest memorialApplicationRequest;
 
@@ -62,11 +64,14 @@ class MemorialApplicationApproveServiceTest {
         memorialApplicationId = 1L;
         memorialApplication = mock(MemorialApplication.class);
         memorialApplicationAvroSchema = mock(MemorialApplicationAvroSchema.class);
+        memorialAppliedAvroSchema = mock(MemorialAppliedAvroSchema.class);
         memorialAvroSchema = mock(MemorialAvroSchema.class);
-        memorialApplicationRequest = new MemorialApplicationRequest(1L, "example");
+        memorialApplicationRequest = new MemorialApplicationRequest(characterId, content);
 
         when(memorialApplication.getMemorialApplicationId()).thenReturn(memorialApplicationId);
         when(memorialApplication.getCharacterId()).thenReturn(characterId);
+        when(memorialApplication.getUserId()).thenReturn(userId);
+        when(memorialApplication.getContent()).thenReturn(content);
     }
 
     @Test
@@ -76,12 +81,14 @@ class MemorialApplicationApproveServiceTest {
         when(memorialApplicationMapper.toMemorialApplication(userId, characterId, content)).thenReturn(memorialApplication);
         when(memorialApplicationRepository.existsByUserIdAndCharacterId(userId, characterId)).thenReturn(false);
         doNothing().when(grpcClient).validateNotAlreadyMemorialized(characterId);
+        when(memorialApplicationMapper.toMemorialAppliedAvroSchema(memorialApplication)).thenReturn(memorialAppliedAvroSchema);
 
         // Act
         memorialApplicationApproveService.apply(userId, memorialApplicationRequest);
 
         // Assert
         verify(memorialApplicationRepository).save(memorialApplication);
+        verify(kafkaProducer).send("memorial-apply-request", memorialAppliedAvroSchema);
     }
 
     @Test
@@ -109,7 +116,7 @@ class MemorialApplicationApproveServiceTest {
         memorialApplicationApproveService.approve(memorialApplicationId, userId);
 
         // Assert
-        verify(kafkaProducer).send("memorial-application-", memorialApplicationAvroSchema);
+        verify(kafkaProducer).send("memorial-application-approved-request", memorialApplicationAvroSchema);
     }
 
 //    @Test

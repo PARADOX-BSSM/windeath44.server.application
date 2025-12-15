@@ -6,6 +6,7 @@ import com.example.memorial_application.domain.dto.response.MemorialApplicationR
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Component;
+import windeath44.server.application.avro.MemorialAppliedAvroSchema;
 import windeath44.server.application.avro.MemorialApplicationAvroSchema;
 
 import java.time.LocalDate;
@@ -45,6 +46,15 @@ public class MemorialApplicationMapper {
             .setContent(content)
             .setCharacterId(characterId)
             .build();
+  }
+
+  public MemorialAppliedAvroSchema toMemorialAppliedAvroSchema(MemorialApplication memorialApplication) {
+    return MemorialAppliedAvroSchema.newBuilder()
+        .setMemorialApplicationId(memorialApplication.getMemorialApplicationId())
+        .setApplicantId(memorialApplication.getUserId())
+        .setCharacterId(memorialApplication.getCharacterId())
+        .setContent(memorialApplication.getContent())
+        .build();
   }
 
   public List<MemorialApplicationResponse> toMemorialApplicationListResponse(Slice<MemorialApplication> memorialApplicationSlice, String viewerId) {
