@@ -15,6 +15,7 @@ import com.example.memorial_application.global.producer.KafkaProducer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import windeath44.server.application.avro.MemorialAppliedAvroSchema;
 import windeath44.server.application.avro.MemorialApplicationAvroSchema;
 import windeath44.server.memorial.avro.MemorialAvroSchema;
 
@@ -43,7 +44,10 @@ public class MemorialApplicationCommandService {
 
     // 만약 해당 캐릭터가 이미 추모중이라면 apply 실패
     grpcClient.validateNotAlreadyMemorialized(characterId);
-    memorialApplicationRepository.save(memorialApplication);
+    MemorialApplication savedMemorialApplication = memorialApplicationRepository.save(memorialApplication);
+
+    MemorialAppliedAvroSchema memorialAppliedAvroSchema = memorialApplicationMapper.toMemorialAppliedAvroSchema(savedMemorialApplication);
+    kafkaProducer.send("memorial-apply-request", memorialAppliedAvroSchema);
   }
 
 
