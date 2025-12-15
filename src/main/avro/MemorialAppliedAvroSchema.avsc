@@ -1,0 +1,12 @@
+{
+  "type": "record",
+  "name": "MemorialAppliedAvroSchema",
+  "namespace": "windeath44.server.application.avro",
+  "doc": "Event emitted when a user submits a memorial application.",
+  "fields": [
+    {"name": "memorialApplicationId", "type": "long", "doc": "Unique identifier for the memorial application"},
+    {"name": "applicantId", "type": "string", "doc": "User submitting the application"},
+    {"name": "characterId", "type": "long", "doc": "Character the memorial is requested for"},
+    {"name": "content", "type": "string", "doc": "Application content or message"}
+  ]
+}
